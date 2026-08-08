@@ -13,7 +13,7 @@ const {
   SERIE_PUBLICATIONS, SERIE_MRR, SERIE_ENGAGEMENT, SERIE_DELAI_VALIDATION,
   SERIE_CHARGE, OCCASIONS, PROPOSITIONS_IA, REALISATIONS, ACTIVITE,
   p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours,
-  escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, releve, vide, routeur, naviguer,
+  escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer,
   tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage,
   tracer, detruireGraphiques, tableDonnees, surAction,
 } = window.LU;
@@ -1633,7 +1633,21 @@ function ouvrirChantier(id) {
   </div>` : ''}
 
   <div class="px-6 py-5 border-b border-rule">
-    <div class="mono text-[11.5px] text-txt-2 mb-4">${escape(c.slug)}</div>
+    <div class="flex items-center gap-3 mb-3">
+      <p class="tag">${c.livrable ? 'Livrable' : 'Aperçu de la créa'}</p>
+      <span class="mono text-[10.5px] text-txt-3 ml-auto">${escape(c.slug)}</span>
+    </div>
+    ${apercuChantier(c, cl)}
+    ${c.livrable
+      ? `<div class="flex flex-wrap gap-2 mt-3">
+           <button class="btn btn-sm" data-act="fichier">${icon('telecharger', 12)} Télécharger le master</button>
+           <button class="btn btn-sm" data-act="fichier">${icon('externe', 12)} Lien de relecture</button>
+         </div>`
+      : `<p class="text-[11.5px] text-txt-3 mt-2.5">Aperçu reconstitué depuis la charte du compte —
+           le fichier source vit dans les outils de création.</p>`}
+  </div>
+
+  <div class="px-6 py-5 border-b border-rule">
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-y-4 gap-x-3">
       <div><p class="tag">Échéance</p><p class="mono text-[13px] mt-1" style="color:${reb.passe ? 'var(--st-late)' : 'var(--txt)'}">${dateCourte(c.echeance)} · ${heure(c.echeance)}</p></div>
       <div><p class="tag">Reste</p><p class="mono text-[13px] mt-1" style="color:${reb.passe ? 'var(--st-late)' : 'var(--txt)'}">${reb.passe ? 'retard ' : ''}${reb.texte}</p></div>

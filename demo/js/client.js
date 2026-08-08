@@ -11,7 +11,7 @@ const {
   NOW, D, ETATS, SOUS_ETATS, NATURES, RESEAUX, SERIE, CLIENTS, client, CHANTIERS,
   PUBLICATIONS, FACTURES, REALISATIONS, SERIE_ENGAGEMENT, PLANS,
   p2, heure, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours, escape,
-  etatChip, reseauGlyphe, jauge, apercuCrea, releve, vide, routeur, naviguer, tiroir,
+  etatChip, reseauGlyphe, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer, tiroir,
   fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage,
   tracer, detruireGraphiques, tableDonnees, surAction,
 } = window.LU;
@@ -377,6 +377,17 @@ function ouvrirDemande(id) {
           </li>`;
         }).join('')}
       </ol>
+    </div>
+
+    <div class="px-6 py-5 border-b border-rule">
+      <p class="tag mb-3">${c.livrable ? 'Ce que Line Up vous propose' : 'Aperçu de la création'}</p>
+      ${apercuChantier(c, moi(), { voix: 'client' })}
+      ${c.etat === 'validation' ? `
+        <div class="flex flex-wrap items-center gap-2 mt-3">
+          <button class="btn btn-sm" data-act="crea-modif" data-id="${c.id}">${icon('message', 12)} Demander une modification</button>
+          <button class="btn btn-sm btn-key sm:flex-1 justify-center" data-act="crea-ok" data-id="${c.id}">${icon('check', 12)} Valider</button>
+        </div>` : ''}
+      ${!c.livrable ? `<p class="text-[11.5px] text-txt-3 mt-2.5">Aperçu reconstitué depuis votre charte.</p>` : ''}
     </div>
 
     <div class="px-6 py-5 border-b border-rule">

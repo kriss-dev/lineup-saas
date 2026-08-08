@@ -138,6 +138,54 @@ function releve(phrase, entrees) {
   </div>`;
 }
 
+/** Le livrable d'un chantier, tel qu'il se regarde : la vidéo se joue vraiment,
+    dans la maquette comme elle se jouerait dans le produit. */
+function lecteurLivrable(l, { voix = 'regie' } = {}) {
+  if (!l) return '';
+  return `<figure class="m-0 overflow-hidden rounded-[var(--radius)] border border-[color:var(--rule)]"
+      style="background:var(--ink-solid)">
+    <video class="block w-full" style="aspect-ratio:16/9;background:#000" controls preload="metadata"
+      poster="${escape(l.poster)}" src="${escape(l.src)}"
+      aria-label="${escape(l.titre)} — livrable vidéo">
+      Votre navigateur ne sait pas lire cette vidéo.
+    </video>
+    <figcaption class="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3" style="color:#e8ecf6">
+      <span class="text-[12.5px]">${escape(l.titre)}</span>
+      <span class="mono text-[10.5px]" style="color:#8d97b3">${escape(l.duree)} · ${escape(l.format)} · ${escape(l.poids)}</span>
+      <span class="mono text-[10.5px] ml-auto" style="color:#8d97b3">
+        ${voix === 'client' ? 'déposé' : 'version'} ${voix === 'client' ? relatif(l.depose) : 'v' + l.version}</span>
+    </figcaption>
+  </figure>`;
+}
+
+/** Le livrable d'un chantier, tel qu'il se regarde. Une vidéo se joue ; à défaut,
+    la créa est reconstituée dans la charte du compte, une tuile par réseau visé.
+    Jamais un cadre vide : sur un logiciel de réalisation graphique, l'objet du
+    travail doit être visible avant tout le reste. */
+function apercuChantier(c, cl, { voix = 'regie' } = {}) {
+  if (c.livrable) return lecteurLivrable(c.livrable, { voix });
+
+  const ch = cl.charte;
+  const fond = ch ? ch.couleurs[0].hex : '#131a2e';
+  const accent = ch ? (ch.couleurs[2] || ch.couleurs[1]).hex : '#2f6bff';
+  const encre = ch && ch.couleurs[1] ? ch.couleurs[1].hex : '#ffffff';
+  const reseaux = (c.reseaux || []).slice(0, 2);
+  const cadres = reseaux.length ? reseaux : ['instagram'];
+
+  return `<div class="grid gap-3" style="grid-template-columns:repeat(${cadres.length}, minmax(0, 1fr))">
+    ${cadres.map((r, i) => apercuCrea({
+      fond: i % 2 ? (ch && ch.couleurs[1] ? ch.couleurs[1].hex : '#ffffff') : fond,
+      encre: i % 2 ? fond : encre,
+      accent,
+      marque: cl.nom.toUpperCase(),
+      titre: c.titre,
+      format: RESEAUX[r] ? RESEAUX[r].label : '',
+      ratio: r === 'tiktok' ? '9 / 16' : '4 / 5',
+      grand: cadres.length === 1,
+    })).join('')}
+  </div>`;
+}
+
 function vide(titre, texte, action = '') {
   return `<div class="flex flex-col items-center justify-center py-16 px-6 text-center">
     <div class="mb-4 opacity-25">${icon('cible', 30)}</div>
@@ -384,5 +432,5 @@ function surAction(racine, poignee) {
 }
 
 
-  window.LU = Object.assign(window.LU || {}, { p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours, escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, releve, vide, routeur, naviguer, tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage, tracer, detruireGraphiques, tableDonnees, surAction });
+  window.LU = Object.assign(window.LU || {}, { p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours, escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer, tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage, tracer, detruireGraphiques, tableDonnees, surAction });
 })();

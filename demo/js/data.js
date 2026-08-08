@@ -259,19 +259,25 @@ const CHANTIERS = [
   },
   {
     id: 'LU-2440', slug: 'KALPY_TEMOIGNAGE_CLIENT_VIDEO', titre: 'Vidéo témoignage client — Groupe Bertin',
-    clientId: 'kalpy', type: 'Vidéo', etat: 'production', priorite: 'normale', ownerId: 'jo',
+    clientId: 'kalpy', type: 'Vidéo', etat: 'validation', priorite: 'normale', ownerId: 'jo',
     ouvert: D(-12, 11, 0), echeance: D(6, 18, 0), diffusion: D(9, 8, 30),
     reseaux: ['linkedin', 'instagram'], devis: { montant: 2400, statut: 'accepte', envoye: D(-11), reponse: D(-10) },
     brief: "Interview de 2 min du DSI du Groupe Bertin sur l'automatisation de leur back-office. Décliner en 3 formats courts pour LinkedIn.",
     tempsVendu: 18, tempsPasse: 9,
     taches: [
       { id: 't1', nature: 'tournage', label: 'Aller tourner — interview sur site', etat: 'fait', ownerId: 'jo', duree: 6, echeance: D(-5, 14, 0) },
-      { id: 't2', nature: 'derush', label: 'Dérushage & sélection verbatims', etat: 'en_cours', ownerId: 'bb', duree: 3, echeance: D(1, 18, 0) },
-      { id: 't3', nature: 'montage', label: 'Montage master 2 min', etat: 'a_faire', ownerId: 'jo', duree: 5, echeance: D(4, 18, 0) },
-      { id: 't4', nature: 'montage', label: 'Déclinaison 3 formats courts', etat: 'a_faire', ownerId: 'bb', duree: 3, echeance: D(5, 18, 0) },
+      { id: 't2', nature: 'derush', label: 'Dérushage & sélection verbatims', etat: 'fait', ownerId: 'bb', duree: 3, echeance: D(-3, 18, 0) },
+      { id: 't3', nature: 'montage', label: 'Montage master', etat: 'fait', ownerId: 'jo', duree: 5, echeance: D(-1, 18, 0) },
+      { id: 't4', nature: 'montage', label: 'Déclinaison 3 formats courts', etat: 'en_cours', ownerId: 'bb', duree: 3, echeance: D(5, 18, 0) },
       { id: 't5', nature: 'export', label: 'Sous-titres FR/EN & exports', etat: 'a_faire', ownerId: 'bb', duree: 1, echeance: D(6, 12, 0) },
     ],
+    livrable: {
+      type: 'video', src: 'assets/spot-720.mp4', poster: 'assets/spot-poster.jpg',
+      titre: 'Master — version 2', duree: '0:24', format: '1920×1080 · H.264', poids: '4,4 Mo',
+      depose: D(-1, 18, 20), version: 2,
+    },
     fichiers: [
+      { nom: 'bertin_master_v2.mp4', poids: '4,4 Mo', type: 'film' },
       { nom: 'itw_bertin_A.mov', poids: '11,4 Go', type: 'film' },
       { nom: 'itw_bertin_B.mov', poids: '10,8 Go', type: 'film' },
       { nom: 'verbatims.md', poids: '12 Ko', type: 'texte' },
@@ -279,6 +285,7 @@ const CHANTIERS = [
     fil: [
       { qui: 'Bastien Wolff', cote: 'client', quand: D(-12, 11, 0), texte: "Bertin accepte de témoigner. Fenêtre de tournage étroite, ils nous donnent 1 h sur site." },
       { qui: 'Jocelyne', cote: 'agence', quand: D(-5, 17, 30), texte: "Tournage bouclé en 50 min, deux axes caméra. Le DSI est très bon face caméra." },
+      { qui: 'Jocelyne', cote: 'agence', quand: D(-1, 18, 20), texte: "Master V2 en ligne dans votre espace : le montage est calé, les sous-titres arrivent avec les formats courts." },
     ],
   },
   {
