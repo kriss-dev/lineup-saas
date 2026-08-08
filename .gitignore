@@ -1,0 +1,11 @@
+# Dépendances (la maquette n'en a aucune : tout est embarqué dans demo/vendor)
+node_modules/
+
+# Système
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Fichiers de travail temporaires
+demo/_*.html
+*.log

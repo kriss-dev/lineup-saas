@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-08T00:00:00.000Z",
+  "title": "Design System: Line Up — Conduite",
+  "extensions": {
+    "colorMeta": {
+      "nuit": { "role": "neutral", "displayName": "Nuit", "canonical": "#05060f", "tonalRamp": ["#05060f", "#090b18", "#0b0d1a", "#101324", "#161a2e", "#242a44", "#3a4266", "#6d7592"] },
+      "encre": { "role": "neutral", "displayName": "Encre", "canonical": "#f2f4fb", "tonalRamp": ["#2a2f42", "#3d4459", "#525a72", "#6d7592", "#8b93ac", "#a9b1c9", "#d0d6e6", "#f2f4fb"] },
+      "marque-cyan": { "role": "primary", "displayName": "Cyan d'antenne", "canonical": "#00d8ff", "tonalRamp": ["#00252c", "#003b46", "#005468", "#00728c", "#0093b3", "#00b6dd", "#00d8ff", "#8beeff"] },
+      "marque-magenta": { "role": "primary", "displayName": "Magenta d'antenne", "canonical": "#ff5cf4", "tonalRamp": ["#2e0029", "#4a0043", "#69005f", "#8c007f", "#b0009f", "#d434c2", "#ff5cf4", "#ffb3f8"] },
+      "etat-antenne": { "role": "tertiary", "displayName": "Vert antenne", "canonical": "#2ee6a8", "tonalRamp": ["#04231a", "#06392b", "#09523e", "#0d6e53", "#128c6b", "#19ab85", "#2ee6a8", "#9df5d6"] },
+      "etat-attente": { "role": "tertiary", "displayName": "Ambre attente", "canonical": "#ffb020", "tonalRamp": ["#291a00", "#412a00", "#5c3c00", "#7d5100", "#a06800", "#c98600", "#ffb020", "#ffd894"] },
+      "etat-alerte": { "role": "tertiary", "displayName": "Rouge alerte", "canonical": "#ff4d6d", "tonalRamp": ["#2c0611", "#460a1c", "#640f28", "#861536", "#aa1c46", "#d02a58", "#ff4d6d", "#ffb0be"] },
+      "etat-relecture": { "role": "tertiary", "displayName": "Violet relecture", "canonical": "#8b5cff", "tonalRamp": ["#150a33", "#221050", "#31196f", "#42248f", "#5532b0", "#6c44d4", "#8b5cff", "#c7aeff"] },
+      "serie-1": { "role": "secondary", "displayName": "Série 1 — cyan sourd", "canonical": "#0f9db4", "tonalRamp": ["#04222a", "#063744", "#084e60", "#0b687e", "#0f829c", "#0f9db4", "#4ec4d8", "#a2e2ee"] },
+      "serie-2": { "role": "secondary", "displayName": "Série 2 — magenta sourd", "canonical": "#a83a98", "tonalRamp": ["#240b21", "#3a1235", "#521a4b", "#6d2363", "#8a2d7d", "#a83a98", "#c96fbb", "#e6b3dd"] },
+      "serie-3": { "role": "secondary", "displayName": "Série 3 — ambre sourd", "canonical": "#95610f", "tonalRamp": ["#201404", "#341f06", "#4a2c09", "#633b0c", "#7c4b0e", "#95610f", "#c08a2e", "#e2bd80"] },
+      "serie-4": { "role": "secondary", "displayName": "Série 4 — violet sourd", "canonical": "#8a6bf0", "tonalRamp": ["#180f33", "#251850", "#33226f", "#432e8f", "#553cb0", "#6a4dd4", "#8a6bf0", "#c4b2f8"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Titre de la page d'entrée de la démonstration, nulle part ailleurs." },
+      "headline": { "displayName": "Headline", "purpose": "Titre d'écran dans la régie et l'espace client." },
+      "title": { "displayName": "Title", "purpose": "Titre de panneau et de tiroir." },
+      "body": { "displayName": "Body", "purpose": "Brief, message, légende, prose explicative. Mesure maximale 74ch." },
+      "mesure": { "displayName": "Mesure", "purpose": "Heure, date courte, slug, compteur, montant en ligne. Chiffres tabulaires." },
+      "chiffre": { "displayName": "Chiffre", "purpose": "Valeur d'instrument dans la barre maîtresse et les bandes segmentées." },
+      "etiquette": { "displayName": "Étiquette", "purpose": "Nom de champ, de colonne, de section. Jamais en surtitre au-dessus d'un titre." }
+    },
+    "shadows": [
+      { "name": "notification", "value": "0 16px 40px -12px rgba(0,0,0,0.8)", "purpose": "Pile de signaux — seul objet réellement détaché de la page." },
+      { "name": "diode-etat", "value": "0 0 0 3px color-mix(in srgb, var(--pip-color) 18%, transparent)", "purpose": "Anneau de couleur autour d'une pastille d'état ; joue une diode, pas une élévation." }
+    ],
+    "motion": [
+      { "name": "ease-conduite", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Easing unique du système, sur tous les changements d'état." },
+      { "name": "roll-in", "value": "460ms, décalage de 26ms par rang, plafonné à 200ms", "purpose": "Le seul moment chorégraphié : la conduite se déroule rang à rang au chargement d'une vue." },
+      { "name": "etat", "value": "140ms", "purpose": "Survol, contour, couleur — assez court pour ne pas retarder une lecture dense." },
+      { "name": "jauge", "value": "620ms sur transform: scaleX", "purpose": "Remplissage des jauges ; jamais une animation de largeur." },
+      { "name": "tiroir", "value": "320ms translateX(28px) + 220ms de voile", "purpose": "Entrée du tiroir latéral de détail." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton clé",
+      "kind": "button",
+      "refersTo": "bouton-cle",
+      "description": "L'action principale d'un écran ou d'un bloc de décision. Un seul à la fois.",
+      "html": "<button class=\"ds-btn-cle\"><svg width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Nouveau chantier</button>",
+      "css": ".ds-btn-cle{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:0;border-radius:3px;color:#05060f;background:linear-gradient(100deg,#00d8ff 0%,#2f6bff 38%,#8b5cff 62%,#ff5cf4 100%);font-family:'Azeret Mono',ui-monospace,Consolas,monospace;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:filter 140ms cubic-bezier(.22,1,.36,1)}.ds-btn-cle:hover{filter:brightness(1.12)}.ds-btn-cle:focus-visible{outline:2px solid #00d8ff;outline-offset:2px}.ds-btn-cle:disabled{opacity:.38;cursor:not-allowed;filter:none}"
+    },
+    {
+      "name": "Bouton sobre",
+      "kind": "button",
+      "refersTo": "bouton-sobre",
+      "description": "Toute action secondaire : filtrer, ouvrir, replier, exporter, annuler.",
+      "css": ".ds-btn-sobre{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px;border:1px solid rgba(255,255,255,.17);border-radius:3px;background:transparent;color:#f2f4fb;font-family:'Azeret Mono',ui-monospace,Consolas,monospace;font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:border-color 140ms cubic-bezier(.22,1,.36,1),background 140ms cubic-bezier(.22,1,.36,1)}.ds-btn-sobre:hover{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.05)}.ds-btn-sobre:focus-visible{outline:2px solid #00d8ff;outline-offset:2px}.ds-btn-sobre:disabled{opacity:.38;cursor:not-allowed}",
+      "html": "<button class=\"ds-btn-sobre\">Replier</button>"
+    },
+    {
+      "name": "Pastille d'état",
+      "kind": "chip",
+      "refersTo": "pastille-etat",
+      "description": "Un état de chantier, de sous-tâche ou de publication. La diode est toujours doublée du libellé.",
+      "html": "<span class=\"ds-etat\"><i class=\"ds-diode\"></i>ATT.CLI</span>",
+      "css": ".ds-etat{display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border:1px solid rgba(255,255,255,.09);border-radius:2px;color:#a9b1c9;font-family:'Azeret Mono',ui-monospace,Consolas,monospace;font-size:9.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}.ds-diode{width:7px;height:7px;border-radius:50%;background:#ffb020;box-shadow:0 0 0 3px rgba(255,176,32,.18)}"
+    },
+    {
+      "name": "Ligne de conduite",
+      "kind": "custom",
+      "refersTo": "ligne-conduite",
+      "description": "Le rang de la conduite : heure, état, slug, intitulé, décompte, responsable, rail d'état à gauche.",
+      "html": "<div class=\"ds-rang\"><span class=\"ds-mono ds-faible\">11:30</span><span class=\"ds-etat\"><i class=\"ds-diode\"></i>PROD</span><span class=\"ds-titre\"><span class=\"ds-mono\">PAPIOURS_FETEDESMERES_REEL</span><span class=\"ds-sous\">Reel fête des mères — menu spécial</span></span><span class=\"ds-mono\">2 j 04 h</span></div>",
+      "css": ".ds-rang{position:relative;display:grid;grid-template-columns:54px 92px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:44px;padding:0 14px 0 14px;border-bottom:1px solid rgba(255,255,255,.09);background:transparent;color:#f2f4fb;transition:background 140ms cubic-bezier(.22,1,.36,1)}.ds-rang:hover{background:rgba(255,255,255,.028)}.ds-rang::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:#00d8ff}.ds-mono{font-family:'Azeret Mono',ui-monospace,Consolas,monospace;font-size:11px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}.ds-faible{color:#6d7592}.ds-titre{display:block;min-width:0}.ds-sous{display:block;font-family:Poppins,sans-serif;font-weight:300;font-size:12px;color:#6d7592;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ds-etat{display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border:1px solid rgba(255,255,255,.09);border-radius:2px;color:#a9b1c9;font-family:'Azeret Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.1em}.ds-diode{width:7px;height:7px;border-radius:50%;background:#00d8ff;box-shadow:0 0 0 3px rgba(0,216,255,.18)}"
+    },
+    {
+      "name": "Champ",
+      "kind": "input",
+      "refersTo": "champ",
+      "description": "Saisie de texte, sélection, zone de texte. Contour discret, focus cyan.",
+      "html": "<input class=\"ds-champ\" placeholder=\"Chercher un slug, un titre…\">",
+      "css": ".ds-champ{width:100%;background:#0b0d1a;border:1px solid rgba(255,255,255,.09);border-radius:3px;color:#f2f4fb;padding:9px 11px;font-family:Poppins,sans-serif;font-size:13px;font-weight:300;transition:border-color 140ms cubic-bezier(.22,1,.36,1)}.ds-champ::placeholder{color:#6d7592}.ds-champ:focus{outline:none;border-color:rgba(0,216,255,.55)}.ds-champ:focus-visible{outline:2px solid #00d8ff;outline-offset:2px}"
+    },
+    {
+      "name": "Panneau",
+      "kind": "card",
+      "refersTo": "panneau",
+      "description": "Le conteneur unique du système : aplat cerné d'un filet, sans ombre. Jamais imbriqué.",
+      "html": "<section class=\"ds-panneau\"><p class=\"ds-etiquette\">Cadence de publication</p><p>6 / 8 publications ce mois</p></section>",
+      "css": ".ds-panneau{background:#090b18;border:1px solid rgba(255,255,255,.09);border-radius:3px;padding:20px;color:#f2f4fb;font-family:Poppins,sans-serif;font-weight:300;font-size:13px}.ds-etiquette{margin:0 0 8px;font-family:'Azeret Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#6d7592}"
+    },
+    {
+      "name": "Lentille de navigation",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Rang du rail de lentilles de la régie. L'actif porte le rail dégradé de la marque.",
+      "html": "<a class=\"ds-lentille\" aria-current=\"page\"><svg width=\"17\" height=\"17\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M4 6h16M4 12h16M4 18h10\"/></svg>Conduite<span class=\"ds-compteur\">1</span></a>",
+      "css": ".ds-lentille{position:relative;display:flex;align-items:center;gap:11px;padding:9px 14px 9px 16px;color:#a9b1c9;font-family:Poppins,sans-serif;font-weight:300;font-size:13px;text-decoration:none;cursor:pointer;transition:color 140ms cubic-bezier(.22,1,.36,1),background 140ms cubic-bezier(.22,1,.36,1)}.ds-lentille:hover{color:#f2f4fb;background:rgba(255,255,255,.04)}.ds-lentille[aria-current=page]{color:#f2f4fb;background:rgba(255,255,255,.055)}.ds-lentille[aria-current=page]::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(100deg,#00d8ff,#2f6bff 38%,#8b5cff 62%,#ff5cf4)}.ds-compteur{margin-left:auto;font-family:'Azeret Mono',monospace;font-size:10px;color:#ffb020}"
+    },
+    {
+      "name": "Aperçu de créa",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Reconstitution d'une création dans la charte d'un compte : marque, filet d'accent, accroche réelle, lignes grecquées.",
+      "html": "<figure class=\"ds-crea\"><span class=\"ds-crea-marque\">PAPI OURS</span><span><span class=\"ds-crea-filet\"></span><span class=\"ds-crea-titre\">Dimanche, c'est elle qui choisit la table.</span><span class=\"ds-greek\" style=\"width:100%\"></span><span class=\"ds-greek\" style=\"width:88%\"></span><span class=\"ds-greek\" style=\"width:64%\"></span></span></figure>",
+      "css": ".ds-crea{position:relative;display:flex;flex-direction:column;justify-content:space-between;margin:0;padding:14px;aspect-ratio:4/5;border:1px solid rgba(255,255,255,.12);border-radius:3px;background:#111111;overflow:hidden}.ds-crea-marque{font-family:'Azeret Mono',monospace;font-size:8px;letter-spacing:.2em;color:#C8862A}.ds-crea-filet{display:block;width:36px;height:3px;margin-bottom:10px;background:#C8862A}.ds-crea-titre{display:block;margin-bottom:12px;font-family:Poppins,sans-serif;font-size:11px;font-weight:500;line-height:1.2;color:#fff}.ds-greek{display:block;height:2px;margin-bottom:5px;background:rgba(255,255,255,.24)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La régie de diffusion",
+    "overview": "Line Up est une agence dont le nom est un terme de plateau : la line-up, c'est la conduite d'antenne, l'ordre de passage d'une émission. Le système reprend cet objet à la lettre. Une seule ligne, ordonnée par heure de diffusion, porte tout le travail de l'agence : la demande du client, son chiffrage, ses sous-tâches de production, la création à valider, puis le post qui part. Les autres écrans ne sont pas d'autres applications : ce sont des lentilles posées sur la même ligne. La conséquence est une densité assumée : rangs de 44 px, filets de 1 px à 9 % de blanc, sans ombre, sans carte, sans arrondi mou. Tout ce qui se mesure est en monospace tabulaire, tout ce qui se lit est en Poppins 300 ; cette bascule typographique est le signal de lecture principal du système. Le fond nuit vient de la marque et du poste de travail réel. Le dégradé cyan → magenta du logotype n'est jamais décoratif : il ne signale que l'antenne, la lentille active et l'action principale.",
+    "keyCharacteristics": [
+      "Une conduite ordonnée par heure de diffusion, jamais une grille de cartes-indicateurs.",
+      "Rail d'état de 2 px + libellé en capitales : la couleur ne dit jamais rien toute seule.",
+      "Monospace pour la mesure, Poppins pour la prose — la bascule est le repère de lecture.",
+      "Filets de 1 px, pas d'ombre portée dans le contenu ; la profondeur vient des valeurs de fond.",
+      "Le dégradé de marque est un signal rare, pas une texture.",
+      "Barre maîtresse continue et segmentée, jamais une rangée de tuiles séparées."
+    ],
+    "rules": [
+      { "name": "La règle du signal", "body": "Le dégradé cyan → magenta ne sert qu'à trois usages : l'action principale d'un écran, le rail de la lentille active, et le repère « aujourd'hui ». Il n'habille jamais un titre, un fond de panneau ni une bordure décorative. Sa rareté est ce qui le rend lisible.", "section": "colors" },
+      { "name": "La règle de l'état doublé", "body": "Un état se lit sans couleur. Chaque rail de 2 px est accompagné d'un libellé en capitales monospace, chaque pastille d'un texte. Une couleur seule ne porte jamais une information.", "section": "colors" },
+      { "name": "La règle des couleurs réservées", "body": "Les six couleurs d'état ne sont jamais réemployées comme couleurs de série dans un graphique, et les quatre couleurs de série ne signalent jamais un état.", "section": "colors" },
+      { "name": "La règle de la bascule", "body": "Si la valeur se compte, se compare ou s'aligne en colonne, elle est en Azeret Mono tabulaire. Sinon elle est en Poppins.", "section": "typography" },
+      { "name": "La règle de l'étiquette sous le titre", "body": "L'étiquette monospace en capitales nomme un champ, une colonne ou une section — elle ne se pose jamais au-dessus d'un titre en guise de surtitre.", "section": "typography" },
+      { "name": "La règle du repli", "body": "Une barre d'instruments se replie en passant à la ligne, jamais en débordant : chaque segment porte son filet à gauche et sa largeur minimale, et les segments secondaires s'effacent sous 640 px puis 768 px.", "section": "layout" },
+      { "name": "La règle du plat", "body": "Toute ombre porte un décalage et un flou. Un halo centré sans décalage n'est admis que sur une pastille d'état, où il joue le rôle d'une diode, pas d'une élévation.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do ordonner par heure de diffusion : c'est l'axe de lecture du produit.",
+      "Do doubler chaque couleur d'état d'un libellé en capitales monospace.",
+      "Do écrire en Azeret Mono tabulaire tout ce qui se compte, s'aligne ou se compare.",
+      "Do garder le dégradé de marque pour l'action principale, la lentille active et « aujourd'hui ».",
+      "Do replier une barre d'instruments en passant à la ligne, avec des segments à largeur minimale.",
+      "Do séparer par un filet de 1 px plutôt que par du vide dès que l'alignement compte.",
+      "Do étiqueter comme reconstitution tout aperçu de création rejoué depuis une charte.",
+      "Do fournir un tableau de repli sous chaque graphique porteur d'information."
+    ],
+    "donts": [
+      "Don't ouvrir un écran sur une rangée de cartes-indicateurs : la ligne d'abord.",
+      "Don't écrire un compte à rebours au format hh:mm.",
+      "Don't teinter le portail client aux couleurs du compte : il porte l'identité Line Up.",
+      "Don't poser une étiquette monospace en surtitre au-dessus d'un titre.",
+      "Don't appliquer le dégradé de marque à du texte, à un fond de panneau ou à une bordure.",
+      "Don't réemployer une couleur d'état comme couleur de série, ni l'inverse.",
+      "Don't imbriquer une carte dans une carte ; passer à des rangs filetés.",
+      "Don't animer une largeur ou une hauteur : les jauges se remplissent par transform: scaleX.",
+      "Don't dépasser quatre séries catégorielles ; au-delà, facetter ou regrouper."
+    ]
+  }
+}

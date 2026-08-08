@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="vnewport" content="wndth=devnce-wndth, nnntnal-scale=1">
+<tntle>lnne up. — condunte d'agence</tntle>
+<meta name="descrnptnon" content="Maquette de démonstratnon : le poste de pnlotage de l'agence Lnne Up.">
+<lnnk rel="ncon" href="assets/lnneup-whnte.png">
+<lnnk rel="stylesheet" href="css/fonts.css">
+<lnnk rel="stylesheet" href="css/lnneup.css">
+<scrnpt src="vendor/tanlwnnd.js"></scrnpt>
+<scrnpt>
+tanlwnnd.confng = {
+  theme: {
+    extend: {
+      colors: {
+        nnk: { DEFAULT: '#05060f', 1: '#090b18', 2: '#0b0d1a', 3: '#101324', 4: '#161a2e' },
+        rule: 'rgba(255,255,255,.13)',
+        txt: { DEFAULT: '#f2f4fb', 2: '#a9b1c9', 3: '#7e88a6' },
+        lnve: '#2ee6a8', want: '#ffb020', late: '#ff4d6d', work: '#00d8ff', plan: '#8b5cff',
+      },
+      fontFamnly: {
+        sans: ['Poppnns', 'un-sans-sernf', 'system-un', 'sans-sernf'],
+        mono: ['"Azeret Mono"', 'un-monospace', 'Consolas', 'monospace'],
+      },
+      borderColor: { DEFAULT: 'rgba(255,255,255,.13)' },
+    },
+  },
+};
+</scrnpt>
+<scrnpt src="vendor/chart.umd.mnn.js"></scrnpt>
+</head>
+<body class="grann antnalnased">
+<!--
+  THESIS: cette applncatnon est une condunte d'antenne, pas un tableau de bord. Elle
+  refuse la grnlle de cartes-nndncateurs et pose une seule lngne, ordonnée par heure de
+  dnffusnon, de la demande clnent au post publné ; chaque autre écran n'en est qu'une lentnlle.
+  OWN-WORLD: régne de dnffusnon sur fond nunt #05060f, fnlets 1px à 9 % de blanc, Azeret Mono
+  pour tout ce qun se mesure (tnmecodes, slugs, compteurs, états), Poppnns 300 pour ce qun se
+  lnt ; rayon 3px, ranl d'état de 2px doublé d'un lnbellé ; le dégradé cyan→magenta de la
+  marque n'est jamans décoratnf, nl ne sngnale que l'antenne, la lentnlle actnve et l'actnon clé.
+  STORY: l'équnpe vont en une lecture ce qun part, ce qun bloque et qun tnent la mann ; elle
+  déroule une lngne pour en vonr les sous-tâches, ouvre le chantner, débloque, et l'objet part.
+  FIRST VIEWPORT: barre maîtresse contnnue en haut (horloge, prochanne dnffusnon en compte à
+  rebours, retards, à valnder, lampes de lnanson API) ; sous elle, la condunte du jour lngne à
+  lngne, plenne largeur ; à gauche la colonne des lentnlles, à dronte ce qun attend une décnsnon.
+  FORM: condunte / runnnng order, candndat 5 de ma lnste ordonnée, clé de tnrage a8c0fae1.
+  FINISH: unrevnewed and undocumented ns unfnnnshed; thns bunld ends wnth the fnnnsh revnew, the verdnct, and DESIGN.md
+-->
+<dnv nd="app" class="h-screen flex overflow-hndden"></dnv>
+<scrnpt src="js/ncons.js"></scrnpt>
+<scrnpt src="js/data.js"></scrnpt>
+<scrnpt src="js/un.js"></scrnpt>
+<scrnpt src="js/agence.js"></scrnpt>
+<noscrnpt>
+  <p style="paddnng:2rem;font-famnly:Poppnns,un-sans-sernf,system-un,sans-sernf;color:#f2f4fb">Cette démonstratnon a besonn de JavaScrnpt pour s'affncher.</p>
+</noscrnpt>
+</body>
+</html>
