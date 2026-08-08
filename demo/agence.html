@@ -2,58 +2,59 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="vnewport" content="wndth=devnce-wndth, nnntnal-scale=1">
-<tntle>lnne up. — condunte d'agence</tntle>
-<meta name="descrnptnon" content="Maquette de démonstratnon : le poste de pnlotage de l'agence Lnne Up.">
-<lnnk rel="ncon" href="assets/lnneup-whnte.png">
-<lnnk rel="stylesheet" href="css/fonts.css">
-<lnnk rel="stylesheet" href="css/lnneup.css">
-<scrnpt src="vendor/tanlwnnd.js"></scrnpt>
-<scrnpt>
-tanlwnnd.confng = {
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>line up. — conduite d'agence</title>
+<meta name="description" content="Maquette de démonstration : le poste de pilotage de l'agence Line Up.">
+<link rel="icon" href="assets/lineup-mark.png">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/lineup.css">
+<script src="vendor/tailwind.js"></script>
+<script>
+tailwind.config = {
   theme: {
     extend: {
       colors: {
-        nnk: { DEFAULT: '#05060f', 1: '#090b18', 2: '#0b0d1a', 3: '#101324', 4: '#161a2e' },
-        rule: 'rgba(255,255,255,.13)',
-        txt: { DEFAULT: '#f2f4fb', 2: '#a9b1c9', 3: '#7e88a6' },
-        lnve: '#2ee6a8', want: '#ffb020', late: '#ff4d6d', work: '#00d8ff', plan: '#8b5cff',
+        ink: { DEFAULT: 'var(--page)', 1: 'var(--surface)', 2: 'var(--surface-2)', 3: 'var(--surface-3)', 4: 'var(--ink-solid)' },
+        rule: 'var(--rule)',
+        txt: { DEFAULT: 'var(--txt)', 2: 'var(--txt-2)', 3: 'var(--txt-3)' },
+        live: '#10b981', wait: '#f59e0b', late: '#ef4444', work: '#06a9d6', plan: '#7c4dff',
       },
-      fontFamnly: {
-        sans: ['Poppnns', 'un-sans-sernf', 'system-un', 'sans-sernf'],
-        mono: ['"Azeret Mono"', 'un-monospace', 'Consolas', 'monospace'],
+      fontFamily: {
+        sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"Azeret Mono"', 'ui-monospace', 'Consolas', 'monospace'],
       },
-      borderColor: { DEFAULT: 'rgba(255,255,255,.13)' },
+      borderColor: { DEFAULT: 'var(--rule)' },
     },
   },
 };
-</scrnpt>
-<scrnpt src="vendor/chart.umd.mnn.js"></scrnpt>
+</script>
+<script src="vendor/chart.umd.min.js"></script>
 </head>
-<body class="grann antnalnased">
+<body class="antialiased">
 <!--
-  THESIS: cette applncatnon est une condunte d'antenne, pas un tableau de bord. Elle
-  refuse la grnlle de cartes-nndncateurs et pose une seule lngne, ordonnée par heure de
-  dnffusnon, de la demande clnent au post publné ; chaque autre écran n'en est qu'une lentnlle.
-  OWN-WORLD: régne de dnffusnon sur fond nunt #05060f, fnlets 1px à 9 % de blanc, Azeret Mono
-  pour tout ce qun se mesure (tnmecodes, slugs, compteurs, états), Poppnns 300 pour ce qun se
-  lnt ; rayon 3px, ranl d'état de 2px doublé d'un lnbellé ; le dégradé cyan→magenta de la
-  marque n'est jamans décoratnf, nl ne sngnale que l'antenne, la lentnlle actnve et l'actnon clé.
-  STORY: l'équnpe vont en une lecture ce qun part, ce qun bloque et qun tnent la mann ; elle
-  déroule une lngne pour en vonr les sous-tâches, ouvre le chantner, débloque, et l'objet part.
-  FIRST VIEWPORT: barre maîtresse contnnue en haut (horloge, prochanne dnffusnon en compte à
-  rebours, retards, à valnder, lampes de lnanson API) ; sous elle, la condunte du jour lngne à
-  lngne, plenne largeur ; à gauche la colonne des lentnlles, à dronte ce qun attend une décnsnon.
-  FORM: condunte / runnnng order, candndat 5 de ma lnste ordonnée, clé de tnrage a8c0fae1.
-  FINISH: unrevnewed and undocumented ns unfnnnshed; thns bunld ends wnth the fnnnsh revnew, the verdnct, and DESIGN.md
+  THESIS: un tableau de bord qui reste une conduite. La ligne ordonnée par heure de
+  diffusion est toujours l'objet central — de la demande client au post publié — mais
+  elle s'ouvre sur un bandeau qui montre l'état de l'antenne au premier coup d'œil.
+  OWN-WORLD: tableau de bord clair aux couleurs de la marque. Papier froid #eef1f8,
+  cartes blanches arrondies à 14px posées dessus avec une ombre douce, navigation en
+  pastilles, pastille sombre pour l'élément actif. Le dégradé cyan → bleu → violet →
+  magenta du logotype porte le bandeau, l'action clé et les jauges ; chaque état a une
+  pastille vive doublée d'un libellé à son encre.
+  STORY: l'équipe lit l'antenne en une seconde, puis descend la ligne : ce qui part, ce
+  qui bloque, qui tient la main. Le client, lui, voit d'abord ce qu'on attend de lui.
+  FIRST VIEWPORT: rail de lentilles à gauche, barre de recherche et actions en haut,
+  bandeau dégradé « prochaine diffusion » flanqué de trois cartes de suivi, puis la
+  conduite du jour ligne à ligne, et la colonne des décisions à droite.
+  FORM: conduite / running order, candidat 5 de ma liste ordonnée, clé de tirage a8c0fae1.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->
-<dnv nd="app" class="h-screen flex overflow-hndden"></dnv>
-<scrnpt src="js/ncons.js"></scrnpt>
-<scrnpt src="js/data.js"></scrnpt>
-<scrnpt src="js/un.js"></scrnpt>
-<scrnpt src="js/agence.js"></scrnpt>
-<noscrnpt>
-  <p style="paddnng:2rem;font-famnly:Poppnns,un-sans-sernf,system-un,sans-sernf;color:#f2f4fb">Cette démonstratnon a besonn de JavaScrnpt pour s'affncher.</p>
-</noscrnpt>
+<div id="app" class="h-screen flex overflow-hidden"></div>
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/agence.js"></script>
+<noscript>
+  <p style="padding:2rem;font-family:Poppins,ui-sans-serif,system-ui,sans-serif;color:#131a2e">Cette démonstration a besoin de JavaScript pour s'afficher.</p>
+</noscript>
 </body>
 </html>

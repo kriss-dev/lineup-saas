@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>line up. — la maquette sur mobile</title>
+<meta name="description" content="Les deux applications Line Up rendues dans un téléphone, côté agence et côté client.">
+<link rel="icon" href="assets/lineup-mark.png">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/lineup.css">
+<script src="vendor/tailwind.js"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      ink: { DEFAULT: 'var(--page)', 1: 'var(--surface)', 2: 'var(--surface-2)', 3: 'var(--surface-3)' },
+      rule: 'var(--rule)',
+      txt: { DEFAULT: 'var(--txt)', 2: 'var(--txt-2)', 3: 'var(--txt-3)' },
+    },
+    fontFamily: { sans: ['Poppins', 'sans-serif'], mono: ['"Azeret Mono"', 'monospace'] },
+    borderColor: { DEFAULT: 'var(--rule)' },
+  } },
+};
+</script>
+<style>
+  .titre { font-family: 'Bricolage Grotesque', Poppins, sans-serif; font-weight: 800; letter-spacing: -0.035em; }
+  .sous-titre { font-family: 'Bricolage Grotesque', Poppins, sans-serif; font-weight: 600; letter-spacing: -0.02em; }
+
+  /* Le téléphone : une vraie fenêtre de 390 px de large, pas une image.
+     L'application tourne dedans, avec ses propres points de rupture. */
+  .tel {
+    position: relative;
+    width: 414px;
+    padding: 12px;
+    border-radius: 42px;
+    background: linear-gradient(160deg, #2a3350, #131a2e 60%);
+    box-shadow: 0 30px 70px -30px rgba(19, 26, 46, .6), 0 2px 0 rgba(255, 255, 255, .18) inset;
+  }
+  .tel::before {
+    content: "";
+    position: absolute;
+    top: 22px; left: 50%;
+    width: 108px; height: 26px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: #0b0f1c;
+    z-index: 2;
+  }
+  .tel iframe {
+    display: block;
+    width: 390px;
+    height: 810px;
+    border: 0;
+    border-radius: 32px;
+    background: var(--page);
+  }
+  .aurore {
+    position: absolute; inset: -20% -10% auto -10%; height: 560px; pointer-events: none; z-index: 0;
+    background:
+      radial-gradient(46% 52% at 20% 30%, rgba(0, 216, 255, .26), transparent 70%),
+      radial-gradient(42% 48% at 55% 12%, rgba(47, 107, 255, .24), transparent 70%),
+      radial-gradient(46% 54% at 84% 36%, rgba(255, 92, 244, .22), transparent 70%);
+    filter: blur(4px);
+  }
+  @media (max-width: 480px) {
+    .tel { width: 100%; padding: 0; border-radius: 0; background: none; box-shadow: none; }
+    .tel::before { display: none; }
+    .tel iframe { width: 100%; height: 640px; border-radius: 14px; }
+  }
+</style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<!--
+  THESIS: la maquette n'est pas « adaptée » au mobile après coup — les deux applications
+  s'y replient réellement. Cette page le montre en les faisant tourner, vivantes, dans un
+  téléphone de 390 px, côte à côte.
+  OWN-WORLD: tableau de bord clair aux couleurs de la marque ; les deux appareils sont les
+  seuls objets sombres de la page, ce qui les détache du papier froid.
+  STORY: on voit d'un coup d'œil que le même système sert l'équipe en déplacement et le
+  client depuis son téléphone, et on peut cliquer dedans.
+  FIRST VIEWPORT: titre, une phrase, puis les deux téléphones qui tournent pour de vrai.
+  FORM: conduite / running order, candidat 5 de ma liste ordonnée, clé de tirage a8c0fae1.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
+-->
+
+<header class="relative z-10 border-b border-rule" style="background:rgba(255,255,255,.74);backdrop-filter:blur(10px)">
+  <div class="max-w-[1180px] mx-auto px-5 lg:px-8 h-[66px] flex items-center gap-4">
+    <a href="index.html" aria-label="line up. — accueil de la démonstration">
+      <img src="assets/lineup-mark-dark.png" alt="line up." class="h-[24px] w-auto">
+    </a>
+    <span class="h-6 w-px" style="background:var(--rule-strong)"></span>
+    <p class="tag hidden sm:block">Maquette · vue mobile</p>
+    <a href="index.html" class="btn btn-sm ml-auto">Vue bureau</a>
+  </div>
+</header>
+
+<main class="flex-1 relative">
+  <div class="aurore" aria-hidden="true"></div>
+
+  <section class="relative z-10 max-w-[1180px] mx-auto px-5 lg:px-8 pt-14 pb-10 text-center">
+    <span class="chip chip-work mb-5">390 px · les deux applications tournent pour de vrai</span>
+    <h1 class="titre text-[34px] sm:text-[46px] leading-[1.04] mx-auto max-w-[18ch]">
+      Le même système, dans la poche.
+    </h1>
+    <p class="text-[15px] text-txt-2 leading-relaxed max-w-[62ch] mx-auto mt-5">
+      À gauche, l’équipe consulte la conduite entre deux tournages. À droite, le client valide
+      un devis depuis son téléphone. Les deux écrans ci-dessous sont l’application elle-même,
+      pas une capture : vous pouvez naviguer dedans.
+    </p>
+  </section>
+
+  <section class="relative z-10 max-w-[1180px] mx-auto px-5 lg:px-8 pb-20
+      flex flex-col md:flex-row items-center md:items-start justify-center gap-10 md:gap-14">
+
+    <figure class="m-0">
+      <div class="tel">
+        <iframe src="agence.html#/conduite" title="Côté agence — la conduite, sur mobile" loading="lazy"></iframe>
+      </div>
+      <figcaption class="mt-5 text-center">
+        <p class="sous-titre text-[19px]">Côté agence</p>
+        <p class="text-[13px] text-txt-2 mt-1 max-w-[34ch] mx-auto leading-relaxed">
+          Le bandeau se réempile, la conduite garde l’heure, l’état et le compte à rebours.
+          Le rail des lentilles passe dans un tiroir.
+        </p>
+        <a href="agence.html" class="btn btn-sm mt-3">Ouvrir en plein écran</a>
+      </figcaption>
+    </figure>
+
+    <figure class="m-0">
+      <div class="tel">
+        <iframe src="client.html#/accueil" title="Côté client — l’espace client, sur mobile" loading="lazy"></iframe>
+      </div>
+      <figcaption class="mt-5 text-center">
+        <p class="sous-titre text-[19px]">Côté client</p>
+        <p class="text-[13px] text-txt-2 mt-1 max-w-[34ch] mx-auto leading-relaxed">
+          Ce qui attend une décision passe en premier, l’action principale prend toute la
+          largeur, et les onglets défilent horizontalement.
+        </p>
+        <a href="client.html" class="btn btn-sm mt-3">Ouvrir en plein écran</a>
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="relative z-10 border-t border-rule" style="background:var(--surface)">
+    <div class="max-w-[1180px] mx-auto px-5 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-9">
+      <div>
+        <h3 class="sous-titre text-[16px] mb-3">Ce qui change sur petit écran</h3>
+        <ul class="space-y-1.5 text-[13px] text-txt-2">
+          <li>Le rail de navigation devient un tiroir</li>
+          <li>Le bandeau de suivi s’empile en une colonne</li>
+          <li>Les lignes gardent heure, état et décompte, le reste s’efface</li>
+          <li>L’action principale prend toute la largeur</li>
+          <li>Les onglets du portail défilent horizontalement</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="sous-titre text-[16px] mb-3">Ce qui ne change jamais</h3>
+        <ul class="space-y-1.5 text-[13px] text-txt-2">
+          <li>L’ordre par heure de diffusion</li>
+          <li>La pastille d’état, toujours doublée d’un libellé</li>
+          <li>Le vocabulaire client côté portail</li>
+          <li>Les mêmes données, la même ligne</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="sous-titre text-[16px] mb-3">À tester au doigt</h3>
+        <p class="text-[13px] text-txt-2 leading-relaxed">
+          Côté agence : dépliez une ligne de conduite pour voir ses sous-tâches. Côté client :
+          acceptez le devis en attente, puis ouvrez une nouvelle demande — elle apparaît
+          aussitôt des deux côtés.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="relative z-10 border-t border-rule" style="background:var(--surface)">
+  <div class="max-w-[1180px] mx-auto px-5 lg:px-8 py-6 flex flex-wrap items-center gap-4">
+    <img src="assets/lineup-mark-dark.png" alt="" class="h-[16px] w-auto opacity-60">
+    <p class="text-[11.5px] text-txt-3">l’agence créative — maquette du système d’exploitation interne</p>
+  </div>
+</footer>
+</body>
+</html>

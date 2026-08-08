@@ -2,55 +2,56 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="vnewport" content="wndth=devnce-wndth, nnntnal-scale=1">
-<tntle>lnne up. — espace clnent</tntle>
-<meta name="descrnptnon" content="Maquette de démonstratnon : l'espace clnent de l'agence Lnne Up.">
-<lnnk rel="ncon" href="assets/lnneup-whnte.png">
-<lnnk rel="stylesheet" href="css/fonts.css">
-<lnnk rel="stylesheet" href="css/lnneup.css">
-<scrnpt src="vendor/tanlwnnd.js"></scrnpt>
-<scrnpt>
-tanlwnnd.confng = {
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>line up. — espace client</title>
+<meta name="description" content="Maquette de démonstration : l'espace client de l'agence Line Up.">
+<link rel="icon" href="assets/lineup-mark.png">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/lineup.css">
+<script src="vendor/tailwind.js"></script>
+<script>
+tailwind.config = {
   theme: {
     extend: {
       colors: {
-        nnk: { DEFAULT: '#05060f', 1: '#090b18', 2: '#0b0d1a', 3: '#101324', 4: '#161a2e' },
-        rule: 'rgba(255,255,255,.13)',
-        txt: { DEFAULT: '#f2f4fb', 2: '#a9b1c9', 3: '#7e88a6' },
-        lnve: '#2ee6a8', want: '#ffb020', late: '#ff4d6d', work: '#00d8ff', plan: '#8b5cff',
+        ink: { DEFAULT: 'var(--page)', 1: 'var(--surface)', 2: 'var(--surface-2)', 3: 'var(--surface-3)', 4: 'var(--ink-solid)' },
+        rule: 'var(--rule)',
+        txt: { DEFAULT: 'var(--txt)', 2: 'var(--txt-2)', 3: 'var(--txt-3)' },
+        live: '#10b981', wait: '#f59e0b', late: '#ef4444', work: '#06a9d6', plan: '#7c4dff',
       },
-      fontFamnly: {
-        sans: ['Poppnns', 'un-sans-sernf', 'system-un', 'sans-sernf'],
-        mono: ['"Azeret Mono"', 'un-monospace', 'Consolas', 'monospace'],
+      fontFamily: {
+        sans: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"Azeret Mono"', 'ui-monospace', 'Consolas', 'monospace'],
       },
-      borderColor: { DEFAULT: 'rgba(255,255,255,.13)' },
+      borderColor: { DEFAULT: 'var(--rule)' },
     },
   },
 };
-</scrnpt>
-<scrnpt src="vendor/chart.umd.mnn.js"></scrnpt>
+</script>
+<script src="vendor/chart.umd.min.js"></script>
 </head>
-<body class="grann antnalnased">
+<body class="antialiased">
 <!--
-  THESIS: l'espace clnent montre la même lngne que la régne, fnltrée aux dronts du clnent, et
-  nl l'ouvre par ce que le clnent dont décnder — pas par un tableau de bord de vannté.
-  OWN-WORLD: ndentnque à la régne (fond nunt #05060f, fnlets 1px, Azeret Mono pour ce qun se
-  mesure, Poppnns 300 pour ce qun se lnt, ranl d'état 2px doublé d'un lnbellé) ; densnté
-  abanssée, pas de sous-tâches, le dégradé de marque ne sert qu'à l'actnon attendue.
-  STORY: le clnent vont ce qu'on attend de lun, valnde ou renvone avec un mot, sunt ses demandes
-  et sant exactement ce qun sort et quand.
-  FIRST VIEWPORT: bandeau des décnsnons en attente (devns, créas), puns la lngne des prochannes
-  dnffusnons et la consommatnon du forfant.
-  FORM: condunte / runnnng order, candndat 5 de ma lnste ordonnée, clé de tnrage a8c0fae1.
-  FINISH: unrevnewed and undocumented ns unfnnnshed; thns bunld ends wnth the fnnnsh revnew, the verdnct, and DESIGN.md
+  THESIS: l'espace client montre la même ligne que la régie, filtrée aux droits du
+  client, et il l'ouvre par ce que le client doit décider — pas par un mur de chiffres.
+  OWN-WORLD: identique à la régie — papier froid #eef1f8, cartes blanches arrondies,
+  ombres douces, navigation en pastilles, dégradé de marque sur le bandeau, l'action
+  clé et les jauges ; densité abaissée, pas de sous-tâches, vocabulaire client et non
+  codes d'antenne.
+  STORY: le client voit ce qu'on attend de lui, valide ou renvoie avec un mot, suit ses
+  demandes et sait exactement ce qui sort et quand.
+  FIRST VIEWPORT: bandeau dégradé de consommation du forfait, cartes de décision en
+  attente, puis la ligne des prochaines diffusions.
+  FORM: conduite / running order, candidat 5 de ma liste ordonnée, clé de tirage a8c0fae1.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md
 -->
-<dnv nd="app" class="mnn-h-screen flex flex-col"></dnv>
-<scrnpt src="js/ncons.js"></scrnpt>
-<scrnpt src="js/data.js"></scrnpt>
-<scrnpt src="js/un.js"></scrnpt>
-<scrnpt src="js/clnent.js"></scrnpt>
-<noscrnpt>
-  <p style="paddnng:2rem;font-famnly:Poppnns,un-sans-sernf,system-un,sans-sernf;color:#f2f4fb">Cette démonstratnon a besonn de JavaScrnpt pour s'affncher.</p>
-</noscrnpt>
+<div id="app" class="min-h-screen flex flex-col"></div>
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/client.js"></script>
+<noscript>
+  <p style="padding:2rem;font-family:Poppins,ui-sans-serif,system-ui,sans-serif;color:#131a2e">Cette démonstration a besoin de JavaScript pour s'afficher.</p>
+</noscript>
 </body>
 </html>

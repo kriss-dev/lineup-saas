@@ -31,7 +31,6 @@ const S = {
   filtreClient: '',
   filtreMembre: '',
   recherche: '',
-  deroules: new Set(),
   moisGrille: new Date(NOW.getFullYear(), NOW.getMonth(), 1),
   studio: { clientId: 'papiours', occasion: 'fetedesmeres', reseau: 'instagram', intention: '', resultats: null, calcul: false },
   equipeOnglet: 'charge',
@@ -79,8 +78,8 @@ function coque() {
   const app = document.getElementById('app');
   app.innerHTML = `
     ${iconSprite()}
-    <aside class="hidden lg:flex w-[212px] shrink-0 flex-col border-r border-rule" style="background:var(--ink-1)">
-      <a href="index.html" class="flex items-center h-[58px] px-4 border-b border-rule shrink-0" aria-label="line up. — accueil de la démonstration">
+    <aside class="zone-sombre hidden lg:flex w-[222px] shrink-0 flex-col">
+      <a href="index.html" class="flex items-center h-[62px] px-5 shrink-0" aria-label="line up. — accueil de la démonstration">
         <img src="assets/lineup-mark.png" alt="line up." class="h-[21px] w-auto">
       </a>
       <nav class="flex-1 overflow-y-auto scroll py-4" aria-label="Lentilles">
@@ -130,60 +129,91 @@ function barreMaitresse() {
       <span class="sr-only">${RESEAUX[r].label} : ${mot}</span></a>`;
   }).join('');
 
-  /* Une seule barre continue, segmentée par des filets. Elle se replie
-     en passant à la ligne : jamais de débordement horizontal sur petit écran. */
-  const seg = 'px-4 py-2.5 border-l border-rule';
+  /* Barre d'action : l'identité de la vue, la recherche, l'état des liaisons
+     et l'action clé. Les mesures, elles, vivent dans le bandeau de la conduite. */
   return `
-  <header class="border-b border-rule" style="background:var(--ink-1)">
-    <div class="flex flex-wrap items-stretch">
-      <div class="px-3 py-2.5 flex items-center gap-3 lg:hidden">
-        <button class="btn btn-sm !px-2" data-act="menu" aria-label="Ouvrir la navigation">${icon('menu', 14)}</button>
-        <img src="assets/lineup-mark.png" alt="line up." class="h-[18px] w-auto">
+  <header class="border-b border-rule" style="background:var(--surface)">
+    <div class="flex flex-wrap items-center gap-3 px-3 lg:px-5 py-3">
+      <button class="btn btn-sm !px-2 lg:hidden" data-act="menu" aria-label="Ouvrir la navigation">${icon('menu', 14)}</button>
+      <img src="assets/lineup-mark-dark.png" alt="line up." class="h-[17px] w-auto lg:hidden">
+
+      <div class="hidden sm:block min-w-0">
+        <p class="text-[15px] leading-tight">${escape(TITRES[S.vue] || 'Conduite')}</p>
+        <p class="tag">${dateLongue(NOW)} · <span class="mono" id="horloge">${heure(NOW)}</span><span class="mono" id="secondes">:${p2(NOW.getSeconds())}</span></p>
       </div>
 
-      <div class="${seg} flex items-center gap-4 min-w-0 flex-1 lg:border-l-0">
-        <div class="shrink-0">
-          <p class="tag">Antenne</p>
-          <p class="num text-[19px] leading-6" id="horloge">${heure(NOW)}<span class="text-[color:var(--txt-3)] text-[11px]" id="secondes">:${p2(NOW.getSeconds())}</span></p>
-        </div>
-        <div class="hidden md:block border-l border-rule pl-4 min-w-0">
-          <p class="tag">${dateLongue(NOW)}</p>
-          <p class="text-[12.5px] text-txt-2 truncate">${chantiersActifs().length} chantiers en cours · ${PUBLICATIONS.filter((p) => memeJour(p.quand, NOW)).length} publications aujourd’hui</p>
-        </div>
+      <label class="relative ml-auto flex-1 min-w-[150px] max-w-[300px] order-last sm:order-none">
+        <span class="sr-only">Rechercher</span>
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-txt-3 pointer-events-none">${icon('recherche', 14)}</span>
+        <input class="field !rounded-full !pl-9 !py-2 !text-[12.5px]" placeholder="Chercher un chantier…"
+          value="${escape(S.recherche)}" data-champ="recherche">
+      </label>
+
+      <div class="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-full" style="background:var(--surface-2)"
+           title="État des liaisons vers les réseaux">
+        ${lampes}
       </div>
 
-      <div class="${seg} min-w-[172px]">
-        <p class="tag">Prochaine diffusion</p>
-        ${pd ? `<p class="flex items-baseline gap-2">
-            <span class="num text-[19px] leading-6" style="color:var(--st-live)">${reb.texte}</span>
-            <span class="mono text-[10px] text-txt-3 truncate">${client(pd.clientId).nom}</span>
-          </p>` : `<p class="text-[13px] text-txt-3">aucune</p>`}
-      </div>
-
-      <a href="#/conduite" class="${seg} min-w-[104px] hover:bg-white/[.03] transition-colors">
-        <p class="tag">En retard</p>
-        <p class="num text-[19px] leading-6" style="color:${retards.length ? 'var(--st-late)' : 'var(--txt-3)'}">${p2(retards.length)}</p>
-      </a>
-
-      <a href="#/pipeline" class="${seg} min-w-[104px] hidden sm:block hover:bg-white/[.03] transition-colors">
-        <p class="tag">À valider</p>
-        <p class="num text-[19px] leading-6" style="color:${aValider().length ? 'var(--st-wait)' : 'var(--txt-3)'}">${p2(aValider().length)}</p>
-      </a>
-
-      <div class="${seg} hidden md:flex items-center gap-4">
-        <div>
-          <p class="tag mb-1.5">Liaisons</p>
-          <div class="flex items-center gap-3">${lampes}</div>
-        </div>
-        <div class="hidden xl:flex items-center gap-2 border-l border-rule pl-4">
-          <button class="btn btn-sm !px-2" data-act="notifs" aria-label="Notifications">
-            ${icon('cloche', 14)}${ko.length ? '<i class="pip pip-late"></i>' : ''}
-          </button>
-          <button class="btn btn-key btn-sm" data-act="nouveau-chantier">${icon('plus', 13)} Chantier</button>
-        </div>
-      </div>
+      <button class="btn btn-sm !px-2.5 relative" data-act="notifs" aria-label="Notifications">
+        ${icon('cloche', 15)}${ko.length ? '<i class="pip pip-late absolute top-1 right-1"></i>' : ''}
+      </button>
+      <button class="btn btn-key btn-sm" data-act="nouveau-chantier">${icon('plus', 13)} <span class="hidden sm:inline">Chantier</span></button>
     </div>
   </header>`;
+}
+
+const TITRES = {
+  conduite: 'Conduite du jour', pipeline: 'Pipeline des chantiers', grille: 'Grille de diffusion',
+  studio: 'Studio IA', comptes: 'Comptes clients', equipe: 'Équipe & RH',
+  facturation: 'Abonnements & facturation', reseaux: 'Liaisons réseaux', analytique: 'Analytique',
+};
+
+/* Le bandeau du tableau de bord : le dégradé de marque porte l'antenne,
+   trois cartes teintées portent ce qui demande une décision. */
+function bandeauConduite() {
+  const pd = prochaineDiffusion();
+  const reb = pd ? rebours(pd.quand) : null;
+  const retards = chantiersActifs().filter(enRetard);
+  const attentes = aValider();
+  const duJour = PUBLICATIONS.filter((p) => memeJour(p.quand, NOW));
+  const parties = duJour.filter((p) => p.etat === 'en_ligne').length;
+
+  const carte = (ton, valeur, titre, detail, lien, jaugeVal, jaugeMax) => `
+    <a href="${lien}" class="panel teinte p-4 flex flex-col justify-between hov" style="--ton:var(--st-${ton})">
+      <div class="flex items-start gap-2">
+        <p class="tag">${escape(titre)}</p>
+        <i class="pip pip-${ton} ml-auto mt-1"></i>
+      </div>
+      <p class="num text-[30px] leading-none mt-3" style="color:var(--st-${ton}-ink)">${valeur}</p>
+      <p class="text-[12px] text-txt-2 mt-1.5 leading-snug">${detail}</p>
+      ${jaugeMax ? `<div class="mt-3">${jauge(jaugeVal, jaugeMax, ton)}</div>` : ''}
+    </a>`;
+
+  return `
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 p-4 lg:p-5 pb-1">
+    <section class="hero p-5 flex flex-col justify-between md:col-span-2 xl:col-span-1 min-h-[164px]">
+      <div class="flex items-center gap-2 relative">
+        <p class="tag">Prochaine diffusion</p>
+        <i class="pip pip-live pip-beat ml-auto"></i>
+      </div>
+      ${pd ? `
+        <div class="relative">
+          <p class="num text-[36px] leading-none mt-3">${reb.texte}</p>
+          <p class="text-[13px] mt-2 opacity-90 flex items-center gap-2">
+            ${reseauGlyphe(pd.reseau, 15, 'opacity-100')} ${escape(client(pd.clientId).nom)} · ${heure(pd.quand)}
+          </p>
+        </div>
+        <p class="text-[12px] relative mt-3 opacity-80">
+          ${duJour.length} publication${duJour.length > 1 ? 's' : ''} aujourd’hui,
+          ${parties} déjà partie${parties > 1 ? 's' : ''}.</p>`
+      : `<p class="text-[15px] mt-3 relative">Aucune diffusion programmée.</p>`}
+    </section>
+
+    ${carte('late', p2(retards.length), 'En retard', retards.length ? 'chantiers dont l’échéance est passée' : 'tout est dans les temps', '#/conduite')}
+    ${carte('wait', p2(attentes.length), 'Chez le client', attentes.length ? 'devis ou créations sans réponse' : 'rien n’attend le client', '#/pipeline')}
+    ${carte('work', `${parties}<span class="text-[16px] text-txt-3">/${duJour.length}</span>`, 'Antenne du jour',
+      'publications parties sur les réseaux', '#/grille', parties, duJour.length || 1)}
+  </div>`;
 }
 
 /* ---------------------------------------------------------
@@ -213,44 +243,47 @@ function lignesConduite() {
 }
 
 function ligneChantier(c) {
-  const ouverte = S.deroules.has(c.id);
   const e = ETATS[c.etat];
   const reb = rebours(c.echeance);
   const av = avancement(c);
   const retard = enRetard(c);
+  const faites = c.taches.filter((t) => t.etat === 'fait').length;
   return `
-  <div class="rdo rail rail-${retard ? 'late' : e.rail} ${ouverte ? 'rdo-open' : ''} cursor-pointer select-none
-       grid-cols-[46px_72px_minmax(0,1fr)_auto] md:grid-cols-[54px_92px_minmax(0,1fr)_150px_86px_128px_104px]"
-       data-act="derouler" data-id="${c.id}" role="button" tabindex="0" aria-expanded="${ouverte}">
-    <div class="pl-3 md:pl-3.5 mono text-[10.5px] md:text-[11px] text-txt-3">${heure(c.echeance)}</div>
+  <div class="rdo rail rail-${retard ? 'late' : e.rail} cursor-pointer select-none
+       ${GRILLE_LIGNE}"
+       data-act="ouvrir-chantier" data-id="${c.id}" role="button" tabindex="0"
+       aria-label="Ouvrir le chantier ${escape(c.titre)}">
+    <div class="pl-3.5 mono text-[11px] text-txt-3">${heure(c.echeance)}</div>
     <div>${etatChip(retard && c.etat !== 'echec' ? 'echec' : c.etat)}</div>
-    <div class="min-w-0 pr-4 flex items-center gap-2.5">
-      <span class="opacity-40 shrink-0 transition-transform duration-200 ${ouverte ? 'rotate-90' : ''}">${icon('chevronDroit', 12)}</span>
+    <div class="min-w-0 pr-4 flex items-center gap-2">
+      <span class="text-txt-3 shrink-0">${icon('chevronDroit', 12)}</span>
       <span class="min-w-0">
-        <span class="mono text-[11.5px] block truncate" style="letter-spacing:-.02em">${escape(c.slug)}</span>
-        <span class="text-[12px] text-txt-3 block truncate">${escape(c.titre)}</span>
+        <span class="text-[13px] block truncate leading-snug">${escape(c.titre)}
+          ${c.priorite === 'haute' ? '<span class="chip chip-late !h-[17px] !text-[8.5px] ml-1.5 align-middle">Prioritaire</span>' : ''}</span>
+        <span class="text-[11.5px] text-txt-3 block truncate mt-0.5">
+          ${escape(client(c.clientId).nom)} · ${escape(c.slug)}${c.taches.length ? ` · ${faites}/${c.taches.length} tâches` : ''}</span>
       </span>
-      ${c.priorite === 'haute' ? `<span class="chip shrink-0 hidden md:inline-flex" style="border-color:rgba(255,77,109,.4);color:#ffb3c1">Prioritaire</span>` : ''}
     </div>
-    <div class="hidden md:block text-[12px] text-txt-2 truncate pr-3">${escape(client(c.clientId).nom)}</div>
-    <div class="hidden md:flex items-center gap-2 text-txt-3">${c.reseaux.map((r) => reseauGlyphe(r, 14)).join('')}</div>
-    <div class="hidden md:block pr-3">
-      <p class="mono text-[10px] text-txt-3 mb-1">${c.taches.filter((t) => t.etat === 'fait').length}/${c.taches.length} tâches</p>
-      ${jauge(av, 1, retard ? 'late' : 'work')}
-    </div>
-    <div class="pr-3.5 flex items-center justify-end gap-2.5 whitespace-nowrap">
-      <span class="mono text-[11px]" style="color:${reb.passe ? 'var(--st-late)' : 'var(--txt-2)'}">${reb.passe ? '+' : ''}${reb.texte}</span>
-      ${avatar(c.ownerId, 22)}
+    <div class="hidden lg:flex items-center gap-2 text-txt-3">${c.reseaux.map((r) => reseauGlyphe(r, 14)).join('')}</div>
+    <div class="pr-3.5 flex items-center justify-end gap-3 whitespace-nowrap">
+      ${c.taches.length ? `<span class="hidden lg:block w-[52px]">${jauge(av, 1, retard ? 'late' : 'work')}</span>` : ''}
+      <span class="mono text-[11px]" style="color:${reb.passe ? 'var(--st-late-ink)' : 'var(--txt-2)'}">${reb.passe ? '+' : ''}${reb.texte}</span>
+      ${avatar(c.ownerId, 24)}
     </div>
   </div>
-  ${ouverte ? sousLignes(c) : ''}`;
+`;
 }
+
+/* Quatre colonnes, les mêmes pour un chantier et pour une publication :
+   l'heure, l'état, l'objet (titre humain d'abord, technique en dessous),
+   les réseaux, puis le bloc de droite — échéance et main qui tient. */
+const GRILLE_LIGNE = 'grid-cols-[46px_104px_minmax(0,1fr)_auto] md:grid-cols-[56px_116px_minmax(0,1fr)_72px_150px]';
 
 function sousLignes(c) {
   const t = c.taches.length
     ? c.taches.map((t) => `
-      <div class="rdo subline rail rail-${SOUS_ETATS[t.etat].rail} grid-cols-[1fr_auto] md:grid-cols-[minmax(0,1fr)_150px_110px_120px]"
-           style="min-height:38px;border-bottom-color:rgba(255,255,255,.05)">
+      <div class="rdo subline rail rail-${SOUS_ETATS[t.etat].rail} grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[minmax(0,1fr)_116px_140px_60px]"
+           style="min-height:40px;border-bottom-color:var(--rule)">
         <div class="flex items-center gap-2.5 min-w-0 pr-4">
           ${icon(NATURES[t.nature].icon, 14, 'opacity-45 shrink-0')}
           <span class="text-[12.5px] truncate">${escape(t.label)}</span>
@@ -261,8 +294,8 @@ function sousLignes(c) {
       </div>`).join('')
     : `<div class="rdo subline text-[12.5px] text-txt-3" style="min-height:38px">Aucune sous-tâche — le chantier n’est pas encore découpé.</div>`;
 
-  return `<div class="border-b border-rule" style="background:rgba(255,255,255,.018)">
-    ${c.incident ? `<div class="subline flex items-start gap-2.5 px-0 py-2.5 text-[12.5px]" style="color:#ffb3c1">
+  return `<div class="border-b border-rule" style="background:var(--wash)">
+    ${c.incident ? `<div class="subline flex items-start gap-2.5 px-0 py-2.5 text-[12.5px]" style="color:var(--st-late-ink)">
         ${icon('alerte', 14, 'shrink-0 mt-0.5')}<span>${escape(c.incident)}</span></div>` : ''}
     ${t}
     <div class="subline flex flex-wrap items-center gap-2 py-2.5">
@@ -290,31 +323,30 @@ function lignePublication(p) {
   const sortie = etat === 'en_ligne'
     ? `<span class="mono text-[11px] text-txt-3">diffusé</span>`
     : etat === 'echec'
-      ? `<span class="mono text-[11px]" style="color:var(--st-late)">échec</span>`
+      ? `<span class="mono text-[11px]" style="color:var(--st-late-ink)">échec</span>`
       : etat === 'manque'
-        ? `<span class="mono text-[11px]" style="color:var(--st-late)">+${reb.texte}</span>`
+        ? `<span class="mono text-[11px]" style="color:var(--st-late-ink)">+${reb.texte}</span>`
         : `<span class="mono text-[11px] text-txt-2">${reb.texte}</span>`;
   const poussable = ['pret', 'manque'].includes(etat);
   return `
-  <div class="rdo rail rail-${e.rail} grid-cols-[46px_72px_minmax(0,1fr)_auto] md:grid-cols-[54px_92px_minmax(0,1fr)_150px_86px_128px_104px]">
-    <div class="pl-3 md:pl-3.5 mono text-[10.5px] md:text-[11px] text-txt-3">${heure(p.quand)}</div>
+  <div class="rdo rail rail-${e.rail} ${GRILLE_LIGNE}">
+    <div class="pl-3.5 mono text-[11px] text-txt-3">${heure(p.quand)}</div>
     <div>${etatChip(etat)}</div>
-    <div class="min-w-0 pr-4 flex items-center gap-2.5">
+    <div class="min-w-0 pr-4 flex items-center gap-2">
       <span class="w-3 shrink-0"></span>
       <span class="min-w-0">
-        <span class="mono text-[11.5px] block truncate" style="letter-spacing:-.02em">${escape(c.nom.toUpperCase().replace(/[^A-Z]/g, ''))}_${p.format.toUpperCase()}_${p.id}</span>
-        <span class="text-[12px] text-txt-3 block truncate">${escape(p.legende)}</span>
+        <span class="text-[13px] block truncate leading-snug">${escape(p.legende)}</span>
+        <span class="text-[11.5px] text-txt-3 block truncate mt-0.5">
+          ${escape(c.nom)} · ${escape(p.format)}${p.portee ? ` · ${nombre(p.portee)} vues` : ''}</span>
       </span>
     </div>
-    <div class="hidden md:block text-[12px] text-txt-2 truncate pr-3">${escape(c.nom)}</div>
-    <div class="hidden md:flex items-center gap-2 text-txt-3">${reseauGlyphe(p.reseau, 14)}</div>
-    <div class="hidden md:block mono text-[10.5px] text-txt-3 pr-3 truncate">${p.format}${p.portee ? ` · ${nombre(p.portee)} vues` : ''}</div>
-    <div class="pr-3.5 flex items-center justify-end gap-2.5 whitespace-nowrap">
+    <div class="hidden lg:flex items-center gap-2 text-txt-3">${reseauGlyphe(p.reseau, 14)}</div>
+    <div class="pr-3.5 flex items-center justify-end gap-3 whitespace-nowrap">
       ${sortie}
       ${poussable
-        ? `<button class="btn btn-sm !h-6 !px-2" data-act="pousser" data-pub="${p.id}"
-             aria-label="Publier maintenant : ${escape(c.nom)}, ${RESEAUX[p.reseau].label}">${icon('envoi', 11)}</button>`
-        : '<span class="w-6"></span>'}
+        ? `<button class="btn btn-sm !h-7 !w-7 !px-0 justify-center shrink-0" data-act="pousser" data-pub="${p.id}"
+             aria-label="Publier maintenant : ${escape(c.nom)}, ${RESEAUX[p.reseau].label}">${icon('envoi', 12)}</button>`
+        : '<span class="w-7 shrink-0"></span>'}
     </div>
   </div>`;
 }
@@ -336,12 +368,12 @@ function vueConduite() {
     const nomJour = d.toLocaleDateString('fr-FR', { weekday: 'long' }).toUpperCase();
     return `
     <div class="sticky top-0 z-10 flex items-center gap-3 px-3.5 py-2 border-b border-rule backdrop-blur-sm"
-         style="background:rgba(17,22,35,.95)">
-      <span class="mono text-[11px] ${aujourdhui ? '' : 'text-txt-3'}" style="${aujourdhui ? 'color:var(--st-live)' : ''}">
-        ${aujourdhui ? 'AUJOURD’HUI' : passe ? 'HIER' : demain ? 'DEMAIN' : nomJour}</span>
+         style="background:rgba(255,255,255,.92)">
+      <span class="text-[12.5px] font-medium ${aujourdhui ? '' : 'text-txt-3'}" style="${aujourdhui ? 'color:var(--st-live)' : ''}">
+        ${aujourdhui ? 'Aujourd’hui' : passe ? 'Hier' : demain ? 'Demain' : nomJour.charAt(0) + nomJour.slice(1).toLowerCase()}</span>
       <span class="tag">${dateLongue(d)}</span>
       <span class="flex-1 border-t border-rule"></span>
-      <span class="mono text-[10px] text-txt-3">${p2(items.length)} objets</span>
+      <span class="text-[11px] text-txt-3">${items.length} objets</span>
     </div>
     <div class="roll">
       ${items.map((l) => (l.type === 'chantier' ? ligneChantier(l.ref) : lignePublication(l.ref))).join('')}
@@ -349,12 +381,15 @@ function vueConduite() {
   }).join('') : vide('Rien sur la ligne', 'Aucun objet ne correspond à ces filtres sur l’horizon choisi.');
 
   return `
-  <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_336px] h-full">
-    <section class="min-w-0 flex flex-col border-r border-rule">
+  <div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_356px] h-full">
+    <section class="min-w-0 flex flex-col overflow-y-auto scroll">
+      ${bandeauConduite()}
       ${barreFiltres()}
-      <div class="flex-1 overflow-y-auto scroll">${corps}</div>
+      <div class="px-4 lg:px-5 pb-5">
+        <div class="panel overflow-hidden">${corps}</div>
+      </div>
     </section>
-    <aside class="hidden xl:flex flex-col overflow-y-auto scroll" style="background:var(--ink-1)">
+    <aside class="hidden xl:flex flex-col overflow-y-auto scroll border-l border-rule" style="background:var(--surface)">
       ${colonneDecisions()}
     </aside>
   </div>`;
@@ -362,26 +397,19 @@ function vueConduite() {
 
 function barreFiltres() {
   return `
-  <div class="flex flex-wrap items-center gap-2 px-3.5 py-2.5 border-b border-rule shrink-0" style="background:var(--ink-1)">
-    <label class="relative flex-1 min-w-[190px] max-w-[300px]">
-      <span class="sr-only">Rechercher un chantier</span>
-      <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-txt-3 pointer-events-none">${icon('recherche', 14)}</span>
-      <input class="field !pl-8 !py-1.5 !text-[12.5px]" placeholder="Chercher un slug, un titre…"
-        value="${escape(S.recherche)}" data-champ="recherche">
-    </label>
-    <select class="field !w-auto !py-1.5 !text-[12px]" data-champ="filtreClient" aria-label="Filtrer par client">
+  <div class="flex flex-wrap items-center gap-2 px-4 lg:px-5 py-3 shrink-0">
+    <select class="field !w-auto !py-1.5 !text-[12px] !rounded-full" data-champ="filtreClient" aria-label="Filtrer par client">
       <option value="">Tous les comptes</option>
       ${CLIENTS.map((c) => `<option value="${c.id}" ${S.filtreClient === c.id ? 'selected' : ''}>${escape(c.nom)}</option>`).join('')}
     </select>
-    <select class="field !w-auto !py-1.5 !text-[12px]" data-champ="filtreMembre" aria-label="Filtrer par intervenant">
+    <select class="field !w-auto !py-1.5 !text-[12px] !rounded-full" data-champ="filtreMembre" aria-label="Filtrer par intervenant">
       <option value="">Toute l’équipe</option>
       ${EQUIPE.map((e) => `<option value="${e.id}" ${S.filtreMembre === e.id ? 'selected' : ''}>${escape(e.prenom)} ${escape(e.nom)}</option>`).join('')}
     </select>
-    <div class="flex items-center border border-rule rounded-[3px] overflow-hidden ml-auto">
-      ${[3, 7, 14].map((h) => `<button class="mono text-[10px] px-2.5 py-1.5 transition-colors ${S.horizon === h ? 'text-txt' : 'text-txt-3 hover:text-txt-2'}"
-        style="${S.horizon === h ? 'background:rgba(255,255,255,.07)' : ''}" data-act="horizon" data-h="${h}">${h} J</button>`).join('')}
+    <div class="flex items-center gap-1 p-1 rounded-full ml-auto" style="background:var(--surface-3)">
+      ${[3, 7, 14].map((h) => `<button class="text-[12px] px-3 py-1.5 rounded-full transition-colors ${S.horizon === h ? 'text-white' : 'text-txt-2 hover:text-txt'}"
+        style="${S.horizon === h ? 'background:var(--ink-solid)' : ''}" data-act="horizon" data-h="${h}">${h} j</button>`).join('')}
     </div>
-    <button class="btn btn-sm" data-act="tout-replier">${icon('bloc', 12)} Replier</button>
   </div>`;
 }
 
@@ -391,57 +419,78 @@ function colonneDecisions() {
   const inc = incidents();
   const ko = liaisonsKO();
 
-  const bloc = (titre, contenu, compte) => `
-    <div class="border-b border-rule">
-      <div class="flex items-center gap-2 px-4 py-2.5 border-b border-rule">
-        <p class="tag">${titre}</p>
-        <span class="mono text-[10px] text-txt-3 ml-auto">${p2(compte)}</span>
-      </div>
-      ${contenu}
+  const total = inc.length + ko.length + devis.length + attentes.length;
+
+  /* Un seul en-tête pour toute la colonne, puis des séparateurs légers.
+     Chaque entrée est une ligne unique : pastille, objet, une ligne de contexte,
+     et — seulement là où une action est possible — un bouton discret. */
+  const separateur = (titre, compte) => `
+    <div class="flex items-center gap-2 px-5 pt-5 pb-2">
+      <p class="tag">${titre}</p>
+      <span class="mono text-[10px] text-txt-3 ml-auto">${p2(compte)}</span>
     </div>`;
 
+  const entree = (o) => `
+    <${o.href ? 'a' : 'button'} ${o.href ? `href="${o.href}"` : `data-act="${o.act}" data-id="${o.id}"`}
+        class="w-full text-left flex gap-3 px-5 py-2.5 hov">
+      <i class="pip pip-${o.ton} ${o.battement ? 'pip-beat' : ''} mt-[7px] shrink-0"></i>
+      <span class="min-w-0 flex-1">
+        <span class="block text-[12.5px] leading-snug">${escape(o.titre)}</span>
+        <span class="block text-[11.5px] text-txt-3 leading-snug mt-0.5">${escape(o.detail)}</span>
+      </span>
+      ${o.marque ? `<span class="mono text-[10px] shrink-0 mt-1" style="color:${o.marqueTon || 'var(--txt-3)'}">${escape(o.marque)}</span>` : ''}
+    </${o.href ? 'a' : 'button'}>`;
+
   return `
-  ${bloc('Incidents', (inc.length || ko.length) ? `
-    ${inc.map((c) => `<button class="w-full text-left px-4 py-3 hover:bg-white/[.03] transition-colors flex gap-3 border-b border-rule"
-        data-act="ouvrir-chantier" data-id="${c.id}">
-      <i class="pip pip-late pip-beat mt-1.5"></i>
-      <span class="min-w-0">
-        <span class="block text-[12.5px] truncate">${escape(c.titre)}</span>
-        <span class="block text-[11.5px] text-txt-3 leading-snug mt-0.5">${escape(c.incident || 'Chantier en échec')}</span>
-      </span></button>`).join('')}
-    ${ko.map((c) => `<a href="#/reseaux" class="px-4 py-3 hover:bg-white/[.03] transition-colors flex gap-3 border-b border-rule last:border-0">
-      <i class="pip pip-${c.etat === 'echec' ? 'late' : 'wait'} mt-1.5"></i>
-      <span class="min-w-0">
-        <span class="block text-[12.5px] truncate">${escape(c.compte)}</span>
-        <span class="block text-[11.5px] text-txt-3 leading-snug mt-0.5">${escape(c.message)}</span>
-      </span></a>`).join('')}
-  ` : `<p class="px-4 py-4 text-[12.5px] text-txt-3">Toutes les liaisons répondent.</p>`, inc.length + ko.length)}
+  <div class="sticky top-0 z-10 flex items-center gap-2 px-5 h-[62px] border-b border-rule" style="background:var(--surface)">
+    <p class="text-[14px]">À traiter</p>
+    <span class="chip chip-wait ml-auto">${p2(total)}</span>
+  </div>
 
-  ${bloc('À chiffrer', devis.length ? devis.map((c) => `
-    <div class="px-4 py-3 border-b border-rule last:border-0">
-      <p class="text-[12.5px] truncate">${escape(c.titre)}</p>
-      <p class="tag mt-1">${escape(client(c.clientId).nom)} · ouvert ${relatif(c.ouvert)}</p>
-      <button class="btn btn-sm mt-2.5 w-full justify-center" data-act="chiffrer" data-id="${c.id}">${icon('euro', 12)} Établir le chiffrage</button>
-    </div>`).join('') : `<p class="px-4 py-4 text-[12.5px] text-txt-3">Rien à chiffrer.</p>`, devis.length)}
+  ${inc.length || ko.length ? `
+    ${separateur('Incidents', inc.length + ko.length)}
+    ${inc.map((c) => entree({ act: 'ouvrir-chantier', id: c.id, ton: 'late', battement: true,
+      titre: c.titre, detail: c.incident || 'Chantier en échec' })).join('')}
+    ${ko.map((c) => entree({ href: '#/reseaux', ton: c.etat === 'echec' ? 'late' : 'wait',
+      titre: c.compte, detail: c.message })).join('')}` : ''}
 
-  ${bloc('En attente du client', attentes.length ? attentes.map((c) => {
-    const j = Math.round((NOW - (c.devis.envoye || c.ouvert)) / 86400000);
-    return `<button class="w-full text-left px-4 py-3 border-b border-rule last:border-0 hover:bg-white/[.03] transition-colors"
-        data-act="ouvrir-chantier" data-id="${c.id}">
-      <p class="text-[12.5px] truncate">${escape(c.titre)}</p>
-      <p class="tag mt-1">${escape(client(c.clientId).nom)} · ${ETATS[c.etat].long.toLowerCase()}</p>
-      <p class="mono text-[10.5px] mt-1.5" style="color:${j > 3 ? 'var(--st-wait)' : 'var(--txt-3)'}">sans réponse depuis ${j} j</p>
-    </button>`;
-  }).join('') : `<p class="px-4 py-4 text-[12.5px] text-txt-3">Aucune attente client.</p>`, attentes.length)}
+  ${devis.length ? `
+    ${separateur('À chiffrer', devis.length)}
+    ${devis.map((c) => `
+      <div class="px-5 py-2.5 hov flex gap-3">
+        <i class="pip pip-idle mt-[7px] shrink-0"></i>
+        <div class="min-w-0 flex-1">
+          <p class="text-[12.5px] leading-snug">${escape(c.titre)}</p>
+          <p class="text-[11.5px] text-txt-3 leading-snug mt-0.5">${escape(client(c.clientId).nom)} · ouvert ${relatif(c.ouvert)}</p>
+        </div>
+        <button class="btn btn-sm shrink-0 !px-2.5" data-act="chiffrer" data-id="${c.id}"
+          aria-label="Établir le chiffrage de ${escape(c.titre)}">${icon('euro', 13)}</button>
+      </div>`).join('')}` : ''}
 
-  ${bloc('Activité', ACTIVITE.map((a) => `
-    <div class="flex gap-2.5 px-4 py-2.5 border-b border-rule last:border-0">
-      ${a.qui ? avatar(a.qui, 20) : `<i class="pip pip-late mt-1.5 ml-1.5 mr-1.5"></i>`}
-      <p class="text-[12px] leading-snug ${a.alerte ? '' : 'text-txt-2'}" style="${a.alerte ? 'color:#ffb3c1' : ''}">
-        ${a.qui ? `<span class="text-txt">${escape(membre(a.qui).prenom)}</span> ` : ''}${escape(a.texte)}
-        <span class="tag block mt-0.5">${heure(a.quand)} · ${dateCourte(a.quand)}</span>
-      </p>
-    </div>`).join(''), ACTIVITE.length)}`;
+  ${attentes.length ? `
+    ${separateur('Chez le client', attentes.length)}
+    ${attentes.map((c) => {
+      const j = Math.round((NOW - (c.devis.envoye || c.ouvert)) / 86400000);
+      return entree({ act: 'ouvrir-chantier', id: c.id, ton: 'wait',
+        titre: c.titre, detail: `${client(c.clientId).nom} · ${ETATS[c.etat].long.toLowerCase()}`,
+        marque: `${j} j`, marqueTon: j > 3 ? 'var(--st-wait-ink)' : 'var(--txt-3)' });
+    }).join('')}` : ''}
+
+  ${!total ? `<p class="px-5 py-6 text-[12.5px] text-txt-3">Rien n’attend de décision. Tout est chez nous.</p>` : ''}
+
+  <div class="mt-4 border-t border-rule">
+    ${separateur('Activité', ACTIVITE.length)}
+    ${ACTIVITE.map((a) => `
+      <div class="flex gap-2.5 px-5 py-2">
+        ${a.qui ? avatar(a.qui, 21) : `<i class="pip pip-late mt-[7px] mx-[7px] shrink-0"></i>`}
+        <p class="text-[12px] leading-snug flex-1 min-w-0 ${a.alerte ? '' : 'text-txt-2'}"
+           style="${a.alerte ? 'color:var(--st-late-ink)' : ''}">
+          ${a.qui ? `<span class="text-txt">${escape(membre(a.qui).prenom)}</span> ` : ''}${escape(a.texte)}
+        </p>
+        <span class="mono text-[10px] text-txt-3 shrink-0 mt-0.5">${heure(a.quand)}</span>
+      </div>`).join('')}
+    <div class="h-5"></div>
+  </div>`;
 }
 
 /* ---------------------------------------------------------
@@ -486,8 +535,8 @@ function carteChantier(c) {
   const retard = enRetard(c);
   const av = avancement(c);
   return `
-  <article class="panel rail rail-${retard ? 'late' : ETATS[c.etat].rail} p-3 cursor-grab active:cursor-grabbing hover:border-white/20 transition-colors"
-      draggable="true" tabindex="-1" data-carte="${c.id}" style="background:var(--ink-2)">
+  <article class="panel rail rail-${retard ? 'late' : ETATS[c.etat].rail} p-3 cursor-grab active:cursor-grabbing hover:border-[color:var(--rule-strong)] transition-colors"
+      draggable="true" tabindex="-1" data-carte="${c.id}">
     <div class="flex items-start gap-2 mb-2">
       <span class="mono text-[10px] text-txt-3">${c.id}</span>
       ${c.priorite === 'haute' ? `<span class="chip !h-[17px] !text-[8.5px]" style="border-color:rgba(255,77,109,.4);color:#ffb3c1">Prioritaire</span>` : ''}
@@ -590,17 +639,17 @@ function vueGrille() {
       <div class="flex-1 overflow-y-auto scroll">
         <div class="grid grid-cols-7 auto-rows-[minmax(112px,1fr)]">
           ${cases.map((d) => {
-            if (!d) return `<div class="border-r border-b border-rule" style="background:rgba(255,255,255,.012)"></div>`;
+            if (!d) return `<div class="border-r border-b border-rule" style="background:var(--wash)"></div>`;
             const items = pubsFiltre(d);
             const auj = memeJour(d, NOW);
             return `
-            <button class="border-r border-b border-rule p-1.5 text-left align-top hover:bg-white/[.03] transition-colors relative"
+            <button class="border-r border-b border-rule p-1.5 text-left align-top hov transition-colors relative"
                 data-act="jour" data-j="${d.toISOString()}">
               ${auj ? `<span class="absolute inset-x-0 top-0 h-[2px]" style="background:var(--grad)"></span>` : ''}
               <span class="mono text-[10.5px] ${auj ? 'text-txt' : 'text-txt-3'}">${p2(d.getDate())}</span>
               <span class="block mt-1 space-y-[3px]">
                 ${items.slice(0, 3).map((p) => `
-                  <span class="flex items-center gap-1.5 rounded-[2px] px-1 py-[3px]" style="background:rgba(255,255,255,.045)">
+                  <span class="flex items-center gap-1.5 rounded-[2px] px-1 py-[3px]" style="background:var(--hover)">
                     <i class="pip pip-${ETATS[etatReel(p)].pip}" style="width:5px;height:5px;box-shadow:none"></i>
                     <span class="shrink-0 opacity-60">${icon(RESEAUX[p.reseau].icon, 11)}</span>
                     <span class="mono text-[9.5px] text-txt-2 truncate">${heure(p.quand)} ${escape(client(p.clientId).nom)}</span>
@@ -672,7 +721,7 @@ function vueComptes() {
         const fait = Object.values(c.consomme).reduce((a, b) => a + b, 0);
         const ton = fait / du > 0.9 ? 'live' : fait / du > 0.55 ? 'work' : 'wait';
         return `
-        <button class="rdo w-full text-left grid-cols-[minmax(0,1fr)_120px_140px_1fr_110px] px-3.5 hover:bg-white/[.03]"
+        <button class="rdo w-full text-left grid-cols-[minmax(0,1fr)_120px_140px_1fr_110px] px-3.5 hov"
             data-act="fiche" data-id="${c.id}">
           <div class="flex items-center gap-3 min-w-0 pr-4">
             ${c.logo
@@ -762,7 +811,7 @@ function ficheClient(id) {
 
         ${sectionFiche(`Chantiers (${chs.length})`, chs.length ? `
           <div>${chs.map((x) => `
-            <button class="rdo w-full text-left rail rail-${ETATS[x.etat].rail} grid-cols-[minmax(0,1fr)_96px_110px_86px] px-3.5 hover:bg-white/[.03]"
+            <button class="rdo w-full text-left rail rail-${ETATS[x.etat].rail} grid-cols-[minmax(0,1fr)_96px_110px_86px] px-3.5 hov"
                 data-act="ouvrir-chantier" data-id="${x.id}">
               <div class="min-w-0 pr-4">
                 <span class="block text-[12.5px] truncate">${escape(x.titre)}</span>
@@ -808,9 +857,9 @@ function ficheClient(id) {
                 <p class="tag mb-2">Couleurs</p>
                 <div class="grid grid-cols-2 gap-2">
                   ${c.charte.couleurs.map((k) => `
-                    <button class="flex items-center gap-2.5 p-1.5 rounded-[3px] hover:bg-white/[.04] transition-colors text-left"
+                    <button class="flex items-center gap-2.5 p-1.5 rounded-[3px] hov transition-colors text-left"
                         data-act="copier" data-valeur="${k.hex}" title="Copier ${k.hex}">
-                      <span class="h-7 w-7 rounded-[2px] shrink-0" style="background:${k.hex};border:1px solid rgba(255,255,255,.16)"></span>
+                      <span class="h-7 w-7 rounded-[2px] shrink-0" style="background:${k.hex};border:1px solid var(--art-edge)"></span>
                       <span class="min-w-0">
                         <span class="block text-[11.5px] truncate">${escape(k.nom)}</span>
                         <span class="mono block text-[9.5px] text-txt-3">${k.hex}</span>
@@ -876,7 +925,7 @@ function ficheClient(id) {
 
 const sectionFiche = (titre, contenu) => `
   <section class="border-b border-rule">
-    <div class="px-5 py-2.5 border-b border-rule flex items-center" style="background:rgba(255,255,255,.018)">
+    <div class="px-5 py-2.5 border-b border-rule flex items-center" style="background:var(--wash)">
       <p class="tag">${escape(titre)}</p>
     </div>
     ${contenu}
@@ -940,7 +989,7 @@ function vueStudio() {
         <div class="px-5 py-2.5 border-b border-rule"><p class="tag">Matière utilisée</p></div>
         <div class="p-5 space-y-3">
           <div class="flex gap-1.5">
-            ${c.charte.couleurs.map((k) => `<span class="h-6 flex-1 rounded-[2px]" title="${escape(k.nom)} ${k.hex}" style="background:${k.hex};border:1px solid rgba(255,255,255,.14)"></span>`).join('')}
+            ${c.charte.couleurs.map((k) => `<span class="h-6 flex-1 rounded-[2px]" title="${escape(k.nom)} ${k.hex}" style="background:${k.hex};border:1px solid var(--art-edge)"></span>`).join('')}
           </div>
           <p class="text-[12px] text-txt-2 leading-relaxed">${escape(c.charte.ton)}</p>
           <p class="tag">${reals.length} publications passées analysées · ${occ ? escape(occ.quand) : ''}</p>
@@ -1046,7 +1095,7 @@ function vueEquipe() {
       <nav class="flex items-center border border-rule rounded-[3px] overflow-hidden" aria-label="Sections RH">
         ${ONGLETS_RH.map((o) => `
           <button class="mono text-[10px] px-3 py-1.5 flex items-center gap-1.5 transition-colors ${S.equipeOnglet === o.cle ? 'text-txt' : 'text-txt-3 hover:text-txt-2'}"
-            style="${S.equipeOnglet === o.cle ? 'background:rgba(255,255,255,.07)' : ''}"
+            style="${S.equipeOnglet === o.cle ? 'background:var(--surface-3)' : ''}"
             data-act="onglet-rh" data-o="${o.cle}" aria-pressed="${S.equipeOnglet === o.cle}">
             ${o.label.toUpperCase()}${compteurs[o.cle] ? `<i class="pip pip-wait"></i>` : ''}
           </button>`).join('')}
@@ -1081,7 +1130,7 @@ function rhCharge() {
       <div class="h-[330px]"><canvas id="g-charge" aria-label="Charge totale de l'équipe par semaine, comparée à la capacité"></canvas></div>
       <div class="mt-4">${legende([
         { label: 'Charge engagée', couleur: SERIE[0] },
-        { label: 'Capacité de l’équipe', couleur: '#7e88a6', valeur: CAPACITE + ' j' },
+        { label: 'Capacité de l’équipe', couleur: '#646f8c', valeur: CAPACITE + ' j' },
       ])}</div>
       ${tableDonnees(['Semaine', 'Charge', 'Capacité', ...EQUIPE.map((e) => e.prenom)],
         SERIE_CHARGE.labels.map((l, i) => [l, chargeTotale[i].toLocaleString('fr-FR') + ' j', CAPACITE + ' j',
@@ -1496,7 +1545,7 @@ function tracerAnalytique() {
         label: RESEAUX[r].label,
         data: SERIE_PUBLICATIONS[r],
         backgroundColor: RESEAUX[r].serie,
-        borderColor: '#111623',
+        borderColor: '#ffffff',
         borderWidth: 2,
         borderRadius: 3,
         borderSkipped: false,
@@ -1519,7 +1568,7 @@ function tracerAnalytique() {
       },
       options: {
         interaction: { mode: 'index', intersect: false },
-        scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => v + ' %', color: '#7e88a6', padding: 8, maxTicksLimit: 5 } }) },
+        scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => v + ' %', color: '#646f8c', padding: 8, maxTicksLimit: 5 } }) },
       },
     });
   }
@@ -1532,7 +1581,7 @@ function tracerAnalytique() {
     },
     options: {
       indexAxis: 'y',
-      scales: { x: axeY({ ticks: { callback: (v) => v + ' j', color: '#7e88a6', padding: 8, maxTicksLimit: 5 } }), y: { ...axeX(), grid: { display: false } } },
+      scales: { x: axeY({ ticks: { callback: (v) => v + ' j', color: '#646f8c', padding: 8, maxTicksLimit: 5 } }), y: { ...axeX(), grid: { display: false } } },
       plugins: { tooltip: { callbacks: { label: (c) => c.parsed.x + ' jours en moyenne' } } },
     },
   });
@@ -1545,7 +1594,7 @@ function tracerAnalytique() {
       datasets: [{
         data: etats.map((e) => CHANTIERS.filter((c) => c.etat === e).length),
         backgroundColor: etats.map((_, i) => RAMPE[i % RAMPE.length]),
-        borderColor: '#111623', borderWidth: 2, hoverOffset: 6,
+        borderColor: '#ffffff', borderWidth: 2, hoverOffset: 6,
       }],
     },
     options: { cutout: '62%' },
@@ -1565,6 +1614,23 @@ function ouvrirChantier(id) {
   const html = `
   ${enteteTiroir(c.titre, `${c.id} · ${cl.nom} · ${c.type}`, `
     <div class="flex items-center gap-2 shrink-0">${etatChip(c.etat)}</div>`)}
+
+  ${c.incident ? `
+  <div class="px-6 py-4 border-b border-rule flex items-start gap-3" style="background:color-mix(in srgb, var(--st-late) 8%, #fff)">
+    <span class="shrink-0 mt-0.5" style="color:var(--st-late-ink)">${icon('alerte', 16)}</span>
+    <div class="min-w-0 flex-1">
+      <p class="text-[13px]" style="color:var(--st-late-ink)">${escape(c.incident)}</p>
+      <button class="btn btn-sm btn-key mt-3" data-act="reconnecter" data-id="${c.id}">
+        ${icon('rafraichir', 12)} Reconnecter et republier</button>
+    </div>
+  </div>` : ''}
+
+  ${c.etat === 'relecture' ? `
+  <div class="px-6 py-4 border-b border-rule flex items-center gap-3" style="background:var(--surface-2)">
+    <p class="text-[13px] text-txt-2 flex-1">La relecture interne est terminée ?</p>
+    <button class="btn btn-sm btn-key shrink-0" data-act="envoyer-validation" data-id="${c.id}">
+      ${icon('envoi', 12)} Envoyer en validation</button>
+  </div>` : ''}
 
   <div class="px-6 py-5 border-b border-rule">
     <div class="mono text-[11.5px] text-txt-2 mb-4">${escape(c.slug)}</div>
@@ -1670,12 +1736,6 @@ function ouvrirChantier(id) {
 function actionGlobale(acte, el) {
   const id = el.dataset.id;
   switch (acte) {
-    case 'derouler': {
-      if (S.deroules.has(id)) S.deroules.delete(id); else S.deroules.add(id);
-      rendre();
-      break;
-    }
-    case 'tout-replier': S.deroules.clear(); rendre(); break;
     case 'horizon': S.horizon = +el.dataset.h; rendre(); break;
     case 'ouvrir-chantier': ouvrirChantier(id); break;
     case 'fiche': naviguer(`#/comptes/${id}`); break;
@@ -1861,7 +1921,7 @@ function ouvrirNouveauChantier() {
       <fieldset><legend class="tag mb-1.5">Réseaux visés</legend>
         <div class="flex flex-wrap gap-2">
           ${Object.keys(RESEAUX).map((r) => `
-            <label class="chip cursor-pointer hover:border-white/30 transition-colors">
+            <label class="chip cursor-pointer hover:border-[color:var(--rule-strong)] transition-colors">
               <input type="checkbox" name="reseau" value="${r}" class="accent-[#00d8ff]">${RESEAUX[r].label}</label>`).join('')}
         </div>
       </fieldset>
@@ -1961,7 +2021,10 @@ function rendre() {
   if (S.vue === 'facturation') tracerFacturation();
   if (S.vue === 'equipe' && S.equipeOnglet === 'charge') tracerCharge();
 
-  hote.querySelectorAll('[data-champ]').forEach((n) => {
+  /* La recherche vit dans la barre d'action, hors de la vue : les deux
+     conteneurs sont recréés à chaque rendu, aucun écouteur ne s'empile. */
+  [...document.getElementById('barre-maitresse').querySelectorAll('[data-champ]'),
+   ...hote.querySelectorAll('[data-champ]')].forEach((n) => {
     const nom = n.dataset.champ;
     const evt = n.tagName === 'SELECT' ? 'change' : 'input';
     n.addEventListener(evt, () => {
@@ -1998,7 +2061,7 @@ function tracerFacturation() {
     },
     options: {
       interaction: { mode: 'index', intersect: false },
-      scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => (v / 1000).toFixed(1) + ' k€', color: '#7e88a6', padding: 8, maxTicksLimit: 4 } }) },
+      scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => (v / 1000).toFixed(1) + ' k€', color: '#646f8c', padding: 8, maxTicksLimit: 4 } }) },
       plugins: { tooltip: { callbacks: { label: (c) => euros(c.parsed.y) } } },
     },
   });
@@ -2020,7 +2083,7 @@ function tracerCharge() {
           label: 'Capacité de l’équipe',
           data: SERIE_CHARGE.labels.map(() => CAPACITE),
           type: 'line',
-          borderColor: '#7e88a6', borderWidth: 2, borderDash: [4, 4],
+          borderColor: '#646f8c', borderWidth: 2, borderDash: [4, 4],
           pointRadius: 0, pointHoverRadius: 0, fill: false, order: 1,
         },
       ],
@@ -2029,7 +2092,7 @@ function tracerCharge() {
       interaction: { mode: 'index', intersect: false },
       scales: {
         x: axeX(),
-        y: axeY({ suggestedMax: CAPACITE + 4, ticks: { callback: (v) => v + ' j', color: '#7e88a6', padding: 8, maxTicksLimit: 5 } }),
+        y: axeY({ suggestedMax: CAPACITE + 4, ticks: { callback: (v) => v + ' j', color: '#646f8c', padding: 8, maxTicksLimit: 5 } }),
       },
       plugins: { tooltip: { callbacks: { label: (c) => `${c.dataset.label} : ${c.parsed.y.toLocaleString('fr-FR')} j` } } },
     },

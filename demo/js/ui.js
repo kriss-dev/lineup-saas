@@ -54,10 +54,10 @@ const escape = (s) =>
     `voix: 'client'` remplace le code d'antenne par ce qu'un client peut lire. */
 function etatChip(cle, { taille = 'sm', voix = 'regie' } = {}) {
   const e = ETATS[cle] || SOUS_ETATS[cle] || { court: cle, pip: 'idle' };
-  const h = taille === 'xs' ? 'h-[19px] text-[9.5px]' : 'h-[21px] text-[9.5px]';
+  const h = taille === 'xs' ? 'h-[21px] text-[9px]' : 'h-[23px] text-[9.5px]';
   const mot = voix === 'client' ? (e.client || e.long || e.court) : e.court;
   const casse = voix === 'client' ? 'normal-case tracking-[.04em]' : '';
-  return `<span class="chip ${h} ${casse}" title="${escape(e.long || e.court)}">
+  return `<span class="chip chip-${e.pip} ${h} ${casse}" title="${escape(e.long || e.court)}">
     <i class="pip pip-${e.pip}"></i>${escape(mot)}</span>`;
 }
 
@@ -83,7 +83,7 @@ function pileAvatars(ids, size = 22) {
 /** Jauge horizontale sobre. `ton` = live | wait | late | work | plan */
 function jauge(valeur, max, ton = 'work') {
   const pct = max ? Math.min(100, Math.round((valeur / max) * 100)) : 0;
-  const couleurs = { live: '#2ee6a8', wait: '#ffb020', late: '#ff4d6d', work: '#00d8ff', plan: '#8b5cff' };
+  const couleurs = { live: 'var(--st-live)', wait: 'var(--st-wait)', late: 'var(--st-late)', work: 'var(--st-work)', plan: 'var(--st-plan)' };
   return `<span class="meter block" role="img" aria-label="${pct} %"
     style="--meter-color:${couleurs[ton]}"><i style="--v:${pct / 100}"></i></span>`;
 }
@@ -94,7 +94,7 @@ function jauge(valeur, max, ton = 'work') {
 function apercuCrea(o) {
   const clair = ['#FFFFFF', '#FAF7F0', '#ffffff'].includes(o.fond);
   const encre = o.encre || (clair ? '#111111' : '#FFFFFF');
-  const greek = clair ? 'rgba(17,17,17,.22)' : 'rgba(255,255,255,.24)';
+  const greek = clair ? 'rgba(17,17,17,.22)' : 'rgba(255,255,255,.26)';
   const motifs = {
     chevron: `<svg viewBox="0 0 100 100" preserveAspectRatio="none" class="absolute inset-0 w-full h-full opacity-[.14]" aria-hidden="true">
       <path d="M18 6 2 50l16 44" fill="none" stroke="${o.accent}" stroke-width="9"/>
@@ -106,7 +106,7 @@ function apercuCrea(o) {
   };
   const lignes = [100, 88, 64];
   return `<div class="relative overflow-hidden rounded-[3px] flex flex-col justify-between p-3.5"
-      style="background:${o.fond};border:1px solid rgba(255,255,255,.12);aspect-ratio:${o.ratio || '4 / 5'}">
+      style="background:${o.fond};border:1px solid var(--art-edge);aspect-ratio:${o.ratio || '4 / 5'}">
     ${motifs[o.motif] || '<span class="absolute inset-0 scan opacity-45"></span>'}
     <div class="relative flex items-start gap-2">
       <span class="mono text-[8.5px] tracking-[.2em]" style="color:${o.accent}">${escape(o.marque)}</span>
@@ -177,7 +177,7 @@ function tiroir(html, { large = false } = {}) {
   const hote = document.createElement('div');
   hote.className = 'fixed inset-0 z-50';
   hote.innerHTML = `
-    <div class="veil absolute inset-0" style="background:rgba(3,4,9,.76)" data-fermer></div>
+    <div class="veil absolute inset-0" style="background:rgba(19,26,46,.44)" data-fermer></div>
     <section role="dialog" aria-modal="true" aria-labelledby="${titreId}"
       class="drawer-panel scroll absolute right-0 top-0 h-full w-full ${large ? 'max-w-[820px]' : 'max-w-[560px]'}
       overflow-y-auto border-l border-[color:var(--rule)]" style="background:var(--ink-1)">${html}</section>`;
@@ -246,8 +246,8 @@ function signal(texte, ton = 'live') {
     document.body.appendChild(pile);
   }
   const n = document.createElement('div');
-  n.className = 'panel flex items-center gap-2.5 px-3.5 py-2.5 text-[12.5px] shadow-[0_16px_40px_-12px_rgba(0,0,0,.8)]';
-  n.style.background = 'var(--ink-3)';
+  n.className = 'panel flex items-center gap-2.5 px-4 py-3 text-[12.5px]';
+  n.style.boxShadow = 'var(--shadow-flottant)';
   n.setAttribute('role', 'status');
   n.innerHTML = `<i class="pip pip-${ton}"></i><span>${escape(texte)}</span>`;
   n.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.22,1,.36,1)' });
@@ -259,9 +259,9 @@ function signal(texte, ton = 'live') {
 
 /* ---------------- Chart.js ---------------- */
 
-const ENCRE = '#a9b1c9';
-const ENCRE_3 = '#7e88a6';
-const GRILLE = 'rgba(255,255,255,.06)';
+const ENCRE = '#414c68';
+const ENCRE_3 = '#646f8c';
+const GRILLE = 'rgba(19,26,46,.08)';
 const MONO = '"Azeret Mono", ui-monospace, Consolas, monospace';
 
 function reglerChart(Chart) {
@@ -276,12 +276,12 @@ function reglerChart(Chart) {
   Chart.defaults.plugins.legend.display = false;
   Chart.defaults.plugins.tooltip = {
     ...Chart.defaults.plugins.tooltip,
-    backgroundColor: '#1a2030',
-    borderColor: 'rgba(255,255,255,.14)',
+    backgroundColor: '#ffffff',
+    borderColor: 'rgba(19,26,46,.14)',
     borderWidth: 1,
     cornerRadius: 3,
     padding: 10,
-    titleColor: '#f2f4fb',
+    titleColor: '#131a2e',
     titleFont: { family: MONO, size: 10, weight: 500 },
     bodyColor: ENCRE,
     bodyFont: { family: MONO, size: 11 },
@@ -322,7 +322,7 @@ function legende(entrees) {
 /** Dégradé vertical doux sous une courbe. */
 function remplissage(ctx, couleur, hauteur = 220) {
   const g = ctx.createLinearGradient(0, 0, 0, hauteur);
-  g.addColorStop(0, couleur + '55');
+  g.addColorStop(0, couleur + '38');
   g.addColorStop(1, couleur + '00');
   return g;
 }

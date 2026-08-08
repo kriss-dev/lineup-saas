@@ -56,10 +56,10 @@ const decisions = () => mesDevis().length + mesValidations().length;
 function coque() {
   document.getElementById('app').innerHTML = `
   ${iconSprite()}
-  <header class="sticky top-0 z-40 border-b border-rule" style="background:rgba(17,22,35,.95);backdrop-filter:blur(8px)">
+  <header class="sticky top-0 z-40 border-b border-rule" style="background:rgba(255,255,255,.92);backdrop-filter:blur(10px)">
     <div class="flex items-center gap-4 px-4 lg:px-6 h-[58px]">
       <a href="index.html" class="shrink-0" aria-label="line up.">
-        <img src="assets/lineup-mark.png" alt="line up." class="h-[21px] w-auto">
+        <img src="assets/lineup-mark-dark.png" alt="line up." class="h-[21px] w-auto">
       </a>
       <span class="hidden sm:block h-6 w-px" style="background:var(--rule-strong)"></span>
       <p class="hidden sm:block tag">Espace client</p>
@@ -74,18 +74,17 @@ function coque() {
         <button class="btn btn-key btn-sm" data-act="nouvelle-demande">${icon('plus', 12)} <span class="hidden sm:inline">Nouvelle demande</span></button>
       </div>
     </div>
-    <nav class="flex items-center gap-1 px-2 lg:px-4 overflow-x-auto scroll" aria-label="Sections">
+    <nav class="flex items-center gap-1 px-3 lg:px-5 pb-3 overflow-x-auto scroll" aria-label="Sections">
       ${ONGLETS.map((o) => `
-        <a href="#/${o.cle}" data-onglet="${o.cle}"
-          class="relative flex items-center gap-2 px-3 py-2.5 text-[13px] whitespace-nowrap transition-colors">
-          ${icon(o.ic, 15, 'opacity-60')}<span>${o.label}</span>
+        <a href="#/${o.cle}" data-onglet="${o.cle}" class="onglet">
+          ${icon(o.ic, 15, 'opacity-70')}<span>${o.label}</span>
           <span class="mono text-[10px] opacity-0" data-badge="${o.cle}"></span>
         </a>`).join('')}
     </nav>
   </header>
   <main id="vue" class="flex-1" tabindex="-1"></main>
   <footer class="border-t border-rule px-4 lg:px-6 py-5 flex flex-wrap items-center gap-4" style="background:var(--ink-1)">
-    <img src="assets/lineup-mark.png" alt="" class="h-[16px] w-auto opacity-60">
+    <img src="assets/lineup-mark-dark.png" alt="" class="h-[16px] w-auto opacity-60">
     <p class="text-[11.5px] text-txt-3">Espace client propulsé par Line Up — maquette de démonstration, données fictives.</p>
     <a href="agence.html" class="btn btn-sm ml-auto">${icon('externe', 12)} Vue agence</a>
   </footer>`;
@@ -121,6 +120,41 @@ function vueAccueil() {
           : dec.length === 1 ? 'Une chose attend votre décision.'
           : `${dec.length} choses attendent votre décision.`}
       </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <section class="hero p-5 flex flex-col justify-between min-h-[152px]">
+        <div class="relative flex items-center gap-2">
+          <p class="tag">Votre forfait ${escape(c.plan)}</p>
+          <i class="pip pip-live ml-auto"></i>
+        </div>
+        <p class="relative num text-[36px] leading-none mt-3">${faits}<span class="text-[17px] opacity-70">/${dus}</span></p>
+        <p class="relative text-[12.5px] opacity-85 mt-1.5">publications ce mois-ci</p>
+        <div class="relative mt-3 h-[6px] rounded-full overflow-hidden" style="background:rgba(255,255,255,.28)">
+          <i class="block h-full rounded-full" style="width:${Math.min(100, Math.round(faits / dus * 100))}%;background:#fff"></i>
+        </div>
+      </section>
+
+      <a href="#/validations" class="panel teinte p-5 flex flex-col justify-between hov" style="--ton:var(--st-wait)">
+        <div class="flex items-center gap-2">
+          <p class="tag">En attente de vous</p>
+          <i class="pip pip-wait ml-auto"></i>
+        </div>
+        <p class="num text-[36px] leading-none mt-3" style="color:var(--st-wait-ink)">${p2(dec.length)}</p>
+        <p class="text-[12.5px] text-txt-2 mt-1.5">${dec.length ? `décision${dec.length > 1 ? 's' : ''} à prendre` : 'rien à décider'}</p>
+      </a>
+
+      <a href="#/planning" class="panel teinte p-5 flex flex-col justify-between hov" style="--ton:var(--st-work)">
+        <div class="flex items-center gap-2">
+          <p class="tag">Prochaine publication</p>
+          <i class="pip pip-work ml-auto"></i>
+        </div>
+        ${aVenir.length ? `
+          <p class="num text-[30px] leading-none mt-3" style="color:var(--st-work-ink)">${rebours(aVenir[0].quand).texte}</p>
+          <p class="text-[12.5px] text-txt-2 mt-1.5 flex items-center gap-2">
+            ${reseauGlyphe(aVenir[0].reseau, 14)} ${dateCourte(aVenir[0].quand)} à ${heure(aVenir[0].quand)}</p>`
+        : `<p class="text-[14px] text-txt-2 mt-3">Rien de programmé</p>`}
+      </a>
     </div>
 
     ${dec.length ? `
@@ -271,7 +305,7 @@ function ligneDemande(c) {
   const reb = rebours(c.echeance);
   const faites = c.taches.filter((t) => t.etat === 'fait').length;
   return `
-  <button class="rdo w-full text-left rail rail-${ETATS[c.etat].rail} px-3.5 py-2 hover:bg-white/[.03]
+  <button class="rdo w-full text-left rail rail-${ETATS[c.etat].rail} px-3.5 py-2 hov
       grid-cols-[minmax(0,1fr)_auto] sm:grid-cols-[minmax(0,1fr)_156px_112px_84px]"
       data-act="ouvrir-demande" data-id="${c.id}" style="min-height:52px">
     <div class="min-w-0 pr-3">
@@ -435,7 +469,7 @@ function rendreNouvelle() {
       <p class="text-[13px] text-txt-2 mb-4">De quoi avez-vous besoin ?</p>
       <div class="space-y-2">
         ${TYPES_DEMANDE.map((t) => `
-          <button class="w-full text-left panel p-3.5 flex items-start gap-3 hover:border-white/30 transition-colors ${n.type === t.cle ? 'border-white/35' : ''}"
+          <button class="w-full text-left panel p-3.5 flex items-start gap-3 hover:border-[color:var(--rule-strong)] transition-colors ${n.type === t.cle ? 'border-[color:var(--blue)]' : ''}"
               data-act="nd-type" data-t="${t.cle}" style="background:${n.type === t.cle ? 'var(--ink-3)' : 'var(--ink-2)'}">
             <span class="mt-0.5 ${n.type === t.cle ? '' : 'opacity-50'}" style="${n.type === t.cle ? 'color:var(--cyan)' : ''}">${icon(t.ic, 18)}</span>
             <span class="min-w-0">
@@ -465,7 +499,7 @@ function rendreNouvelle() {
       <fieldset><legend class="tag mb-1.5">Où cela doit paraître</legend>
         <div class="flex flex-wrap gap-2">
           ${Object.keys(RESEAUX).filter((r) => moi().cadence[r]).map((r) => `
-            <button class="chip !h-8 !px-3 hover:border-white/35 transition-colors ${n.reseaux.includes(r) ? 'border-white/40' : ''}"
+            <button class="chip !h-8 !px-3 hover:border-[color:var(--rule-strong)] transition-colors ${n.reseaux.includes(r) ? 'border-[color:var(--blue)]' : ''}"
               data-act="nd-reseau" data-r="${r}" style="${n.reseaux.includes(r) ? 'background:var(--ink-3);color:var(--txt)' : ''}">
               ${icon(RESEAUX[r].icon, 13)}${RESEAUX[r].label}</button>`).join('')}
         </div>
@@ -503,7 +537,7 @@ function rendreNouvelle() {
     ${enteteTiroir('Nouvelle demande', `Étape ${n.etape} sur 3`)}
     <div class="px-6 pt-4">
       <div class="flex gap-1.5">
-        ${[1, 2, 3].map((i) => `<span class="h-[3px] flex-1 rounded-full" style="background:${i <= n.etape ? 'var(--grad)' : 'rgba(255,255,255,.13)'}"></span>`).join('')}
+        ${[1, 2, 3].map((i) => `<span class="h-[3px] flex-1 rounded-full" style="background:${i <= n.etape ? 'var(--grad)' : 'var(--rule)'}"></span>`).join('')}
       </div>
     </div>
     ${corps}
@@ -611,8 +645,8 @@ function vuePlanning() {
             <span class="mono text-[10.5px] ${auj ? 'text-txt' : 'text-txt-3'}">${p2(d.getDate())}</span>
             <div class="mt-1 space-y-[3px]">
               ${items.slice(0, 3).map((p) => `
-                <button class="w-full flex items-center gap-1.5 rounded-[2px] px-1 py-[3px] text-left hover:bg-white/[.09] transition-colors"
-                    style="background:rgba(255,255,255,.06)" data-act="pub" data-pub="${p.id}">
+                <button class="w-full flex items-center gap-1.5 rounded-[2px] px-1 py-[3px] text-left hov transition-colors"
+                    style="background:var(--hover)" data-act="pub" data-pub="${p.id}">
                   <i class="pip pip-${ETATS[p.etat].pip}" style="width:5px;height:5px;box-shadow:none"></i>
                   <span class="shrink-0 opacity-60">${icon(RESEAUX[p.reseau].icon, 11)}</span>
                   <span class="mono text-[9.5px] text-txt-2 truncate">${heure(p.quand)}</span>
@@ -709,7 +743,7 @@ function tracerPerformance() {
       data: { labels: SERIE_ENGAGEMENT.labels, datasets: [{ label: 'Engagement', data: serie, borderColor: SERIE[0], backgroundColor: remplissage(g, SERIE[0], 230), borderWidth: 2, fill: true, tension: 0.32, pointRadius: 0, pointHoverRadius: 5 }] },
       options: {
         interaction: { mode: 'index', intersect: false },
-        scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => v + ' %', color: '#7e88a6', padding: 8, maxTicksLimit: 5 } }) },
+        scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => v + ' %', color: '#646f8c', padding: 8, maxTicksLimit: 5 } }) },
       },
     });
   }
@@ -727,7 +761,7 @@ function tracerPerformance() {
       }],
     },
     options: {
-      scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => (v >= 1000 ? v / 1000 + ' k' : v), color: '#7e88a6', padding: 8, maxTicksLimit: 5 } }) },
+      scales: { x: axeX(), y: axeY({ ticks: { callback: (v) => (v >= 1000 ? v / 1000 + ' k' : v), color: '#646f8c', padding: 8, maxTicksLimit: 5 } }) },
       plugins: { tooltip: { callbacks: { label: (x) => nombre(x.parsed.y) + ' vues' } } },
     },
   });
@@ -758,7 +792,7 @@ function vueMarque() {
             ${c.charte.couleurs.map((k) => `
               <button class="text-left group" data-act="copier" data-valeur="${k.hex}" title="Copier ${k.hex}">
                 <span class="block h-20 rounded-[3px] mb-2 transition-transform group-hover:scale-[1.02]"
-                  style="background:${k.hex};border:1px solid rgba(255,255,255,.2)"></span>
+                  style="background:${k.hex};border:1px solid var(--art-edge)"></span>
                 <span class="block text-[12.5px]">${escape(k.nom)}</span>
                 <span class="mono block text-[10.5px] text-txt-3">${k.hex}</span>
               </button>`).join('')}
@@ -805,7 +839,7 @@ function vueMarque() {
         <section class="panel p-5">
           <h2 class="tag mb-2.5">Mots-dièse</h2>
           <div class="flex flex-wrap gap-1.5">
-            ${c.charte.hashtags.map((h) => `<button class="chip hover:border-white/35 transition-colors" data-act="copier" data-valeur="${escape(h)}">${escape(h)}</button>`).join('')}
+            ${c.charte.hashtags.map((h) => `<button class="chip hover:border-[color:var(--rule-strong)] transition-colors" data-act="copier" data-valeur="${escape(h)}">${escape(h)}</button>`).join('')}
           </div>
         </section>
         <section class="panel p-5">
@@ -1038,7 +1072,7 @@ function ouvrirFormules() {
     ${enteteTiroir('Changer de formule', 'Le changement prend effet au mois suivant')}
     <div class="px-6 py-5 space-y-3">
       ${PLANS.map((p) => `
-        <article class="panel p-4 ${p.nom === c.plan ? 'border-white/35' : ''}" style="background:${p.nom === c.plan ? 'var(--ink-3)' : 'var(--ink-2)'}">
+        <article class="panel p-4 ${p.nom === c.plan ? 'border-[color:var(--blue)]' : ''}" style="background:${p.nom === c.plan ? 'var(--ink-3)' : 'var(--ink-2)'}">
           <div class="flex items-baseline gap-2 mb-2">
             <p class="text-[15px]">${escape(p.nom)}</p>
             ${p.nom === c.plan ? `<span class="chip"><i class="pip pip-live"></i>Formule actuelle</span>` : ''}
@@ -1091,8 +1125,6 @@ function rendre() {
   document.querySelectorAll('[data-onglet]').forEach((n) => {
     const actif = n.dataset.onglet === S.vue;
     n.setAttribute('aria-current', actif ? 'page' : 'false');
-    n.className = `relative flex items-center gap-2 px-3 py-2.5 text-[13px] whitespace-nowrap transition-colors ${actif ? 'text-txt' : 'text-txt-3 hover:text-txt-2'}`;
-    n.style.boxShadow = actif ? 'inset 0 -2px 0 0 #00d8ff' : '';
   });
   const badges = { validations: decisions(), demandes: mesChantiers().filter((c) => c.etat !== 'en_ligne').length };
   document.querySelectorAll('[data-badge]').forEach((n) => {
