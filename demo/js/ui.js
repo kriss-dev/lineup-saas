@@ -76,6 +76,31 @@ function avatar(id, size = 24) {
     background:${m.couleur}22;color:${m.couleur};border:1px solid ${m.couleur}55">${m.initiales}</span>`;
 }
 
+/** Pastille de compte : le vrai logo quand on l'a, sinon un monogramme dans la
+    couleur du compte. Sur une ligne dense, la marque se repère avant le nom. */
+const LIAISONS = ['de', 'des', 'du', 'la', 'le', 'les', 'et', 'aux', 'au', 'a'];
+
+function logoClient(c, size = 26) {
+  if (!c) return '';
+  const commun = `width:${size}px;height:${size}px;border-radius:${Math.round(size * 0.3)}px;`;
+  // Le mot-symbole carré quand il existe : un logotype large devient illisible à 28 px.
+  const source = c.icone || c.logo;
+  if (source) {
+    return `<span class="shrink-0 inline-flex items-center justify-center overflow-hidden"
+      title="${escape(c.nom)}" style="${commun}background:${c.logoFond};border:1px solid var(--rule)">
+      <img src="${escape(source)}" alt="${escape(c.nom)}"
+        style="width:${size - 8}px;height:${size - 8}px;object-fit:contain"></span>`;
+  }
+  const teinte = c.couleur || '#646f8c';
+  const mono = c.nom.replace(/[^A-Za-zÀ-ÿ ]/g, '').split(/\s+/)
+    .filter((m) => m && !LIAISONS.includes(m.toLowerCase()))
+    .slice(0, 2).map((m) => m[0].toUpperCase()).join('');
+  return `<span class="shrink-0 inline-flex items-center justify-center"
+    title="${escape(c.nom)}" aria-label="${escape(c.nom)}"
+    style="${commun}background:${teinte}1f;color:${teinte};border:1px solid ${teinte}3d;
+    font-size:${Math.round(size * 0.36)}px;font-weight:600">${escape(mono)}</span>`;
+}
+
 function pileAvatars(ids, size = 22) {
   return `<span class="flex -space-x-1.5">${ids.map((i) => avatar(i, size)).join('')}</span>`;
 }
@@ -432,5 +457,5 @@ function surAction(racine, poignee) {
 }
 
 
-  window.LU = Object.assign(window.LU || {}, { p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours, escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer, tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage, tracer, detruireGraphiques, tableDonnees, surAction });
+  window.LU = Object.assign(window.LU || {}, { p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours, escape, etatChip, reseauGlyphe, avatar, logoClient, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer, tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage, tracer, detruireGraphiques, tableDonnees, surAction });
 })();

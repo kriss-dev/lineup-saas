@@ -104,6 +104,7 @@ const CLIENTS = [
     nom: 'Papi Ours',
     baseline: 'Brasserie artisanale & bar à manger',
     logo: 'assets/client-papiours.png',
+    icone: 'assets/client-papiours-icon.png',
     logoFond: '#FAF7F0',
     secteur: 'Restauration',
     ville: 'Aix-en-Provence',
@@ -142,6 +143,7 @@ const CLIENTS = [
     nom: 'Kalpy',
     baseline: 'Build. Automate. Elevate.',
     logo: 'assets/client-kalpy.png',
+    icone: 'assets/client-kalpy-icon.png',
     logoFond: '#FFFFFF',
     secteur: 'Automatisation & IA — B2B',
     ville: 'Lyon',
@@ -175,10 +177,10 @@ const CLIENTS = [
     tempsPasse: 26,
     tempsVendu: 24,
   },
-  { id: 'vaganay', nom: 'Maison Vaganay', baseline: 'Traiteur événementiel', secteur: 'Traiteur', ville: 'Salon-de-Provence', depuis: '2025-09-02', plan: 'Essentiel', prix: 490, cadence: { instagram: 6, facebook: 4, linkedin: 0, tiktok: 0 }, consomme: { instagram: 4, facebook: 3, linkedin: 0, tiktok: 0 }, audience: { instagram: 3210, facebook: 2870, linkedin: 0, tiktok: 0 } },
-  { id: 'ocres', nom: 'Domaine des Ocres', baseline: 'Vignoble & caveau', secteur: 'Viticulture', ville: 'Roussillon', depuis: '2024-06-20', plan: 'Studio', prix: 890, cadence: { instagram: 8, facebook: 6, linkedin: 2, tiktok: 0 }, consomme: { instagram: 8, facebook: 5, linkedin: 1, tiktok: 0 }, audience: { instagram: 9450, facebook: 5120, linkedin: 780, tiktok: 0 } },
-  { id: 'ferrand', nom: 'Cabinet Ferrand', baseline: 'Avocats associés', secteur: 'Juridique', ville: 'Marseille', depuis: '2026-01-12', plan: 'Essentiel', prix: 490, cadence: { instagram: 0, facebook: 2, linkedin: 8, tiktok: 0 }, consomme: { instagram: 0, facebook: 1, linkedin: 6, tiktok: 0 }, audience: { instagram: 0, facebook: 910, linkedin: 4230, tiktok: 0 } },
-  { id: 'sudtoit', nom: 'Sud Toitures', baseline: 'Couverture & zinguerie', secteur: 'Bâtiment', ville: 'Vitrolles', depuis: '2025-11-04', plan: 'Essentiel', prix: 490, cadence: { instagram: 4, facebook: 6, linkedin: 0, tiktok: 2 }, consomme: { instagram: 3, facebook: 4, linkedin: 0, tiktok: 1 }, audience: { instagram: 1240, facebook: 2050, linkedin: 0, tiktok: 640 } },
+  { id: 'vaganay', nom: 'Maison Vaganay', couleur: '#9a6b2f', baseline: 'Traiteur événementiel', secteur: 'Traiteur', ville: 'Salon-de-Provence', depuis: '2025-09-02', plan: 'Essentiel', prix: 490, cadence: { instagram: 6, facebook: 4, linkedin: 0, tiktok: 0 }, consomme: { instagram: 4, facebook: 3, linkedin: 0, tiktok: 0 }, audience: { instagram: 3210, facebook: 2870, linkedin: 0, tiktok: 0 } },
+  { id: 'ocres', nom: 'Domaine des Ocres', couleur: '#b25a2a', baseline: 'Vignoble & caveau', secteur: 'Viticulture', ville: 'Roussillon', depuis: '2024-06-20', plan: 'Studio', prix: 890, cadence: { instagram: 8, facebook: 6, linkedin: 2, tiktok: 0 }, consomme: { instagram: 8, facebook: 5, linkedin: 1, tiktok: 0 }, audience: { instagram: 9450, facebook: 5120, linkedin: 780, tiktok: 0 } },
+  { id: 'ferrand', nom: 'Cabinet Ferrand', couleur: '#2f4f8f', baseline: 'Avocats associés', secteur: 'Juridique', ville: 'Marseille', depuis: '2026-01-12', plan: 'Essentiel', prix: 490, cadence: { instagram: 0, facebook: 2, linkedin: 8, tiktok: 0 }, consomme: { instagram: 0, facebook: 1, linkedin: 6, tiktok: 0 }, audience: { instagram: 0, facebook: 910, linkedin: 4230, tiktok: 0 } },
+  { id: 'sudtoit', nom: 'Sud Toitures', couleur: '#3f7a5e', baseline: 'Couverture & zinguerie', secteur: 'Bâtiment', ville: 'Vitrolles', depuis: '2025-11-04', plan: 'Essentiel', prix: 490, cadence: { instagram: 4, facebook: 6, linkedin: 0, tiktok: 2 }, consomme: { instagram: 3, facebook: 4, linkedin: 0, tiktok: 1 }, audience: { instagram: 1240, facebook: 2050, linkedin: 0, tiktok: 640 } },
 ];
 
 const client = (id) => CLIENTS.find((c) => c.id === id);

@@ -13,7 +13,7 @@ const {
   SERIE_PUBLICATIONS, SERIE_MRR, SERIE_ENGAGEMENT, SERIE_DELAI_VALIDATION,
   SERIE_CHARGE, OCCASIONS, PROPOSITIONS_IA, REALISATIONS, ACTIVITE,
   p2, heure, jourCourt, dateCourte, dateLongue, euros, nombre, memeJour, relatif, rebours,
-  escape, etatChip, reseauGlyphe, avatar, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer,
+  escape, etatChip, reseauGlyphe, avatar, logoClient, pileAvatars, jauge, apercuCrea, lecteurLivrable, apercuChantier, releve, vide, routeur, naviguer,
   tiroir, fermerTiroir, enteteTiroir, signal, reglerChart, axeX, axeY, legende, remplissage,
   tracer, detruireGraphiques, tableDonnees, surAction,
 } = window.LU;
@@ -255,8 +255,8 @@ function ligneChantier(c) {
        aria-label="Ouvrir le chantier ${escape(c.titre)}">
     <div class="pl-3.5 mono text-[11px] text-txt-3">${heure(c.echeance)}</div>
     <div>${etatChip(retard && c.etat !== 'echec' ? 'echec' : c.etat)}</div>
-    <div class="min-w-0 pr-4 flex items-center gap-2">
-      <span class="text-txt-3 shrink-0">${icon('chevronDroit', 12)}</span>
+    <div class="min-w-0 pr-4 flex items-center gap-2.5">
+      ${logoClient(client(c.clientId), 28)}
       <span class="min-w-0">
         <span class="text-[13px] block truncate leading-snug">${escape(c.titre)}
           ${c.priorite === 'haute' ? '<span class="chip chip-late !h-[17px] !text-[8.5px] ml-1.5 align-middle">Prioritaire</span>' : ''}</span>
@@ -332,8 +332,8 @@ function lignePublication(p) {
   <div class="rdo rail rail-${e.rail} ${GRILLE_LIGNE}">
     <div class="pl-3.5 mono text-[11px] text-txt-3">${heure(p.quand)}</div>
     <div>${etatChip(etat)}</div>
-    <div class="min-w-0 pr-4 flex items-center gap-2">
-      <span class="w-3 shrink-0"></span>
+    <div class="min-w-0 pr-4 flex items-center gap-2.5">
+      ${logoClient(c, 28)}
       <span class="min-w-0">
         <span class="text-[13px] block truncate leading-snug">${escape(p.legende)}</span>
         <span class="text-[11.5px] text-txt-3 block truncate mt-0.5">
@@ -547,8 +547,9 @@ function carteChantier(c) {
       <p class="mono text-[10px] text-txt-3 truncate mb-2.5">${escape(c.slug)}</p>
     </button>
     <div class="flex items-center gap-2 mb-2.5 text-txt-3">
-      ${c.reseaux.map((r) => reseauGlyphe(r, 13)).join('')}
+      ${logoClient(client(c.clientId), 22)}
       <span class="text-[11.5px] text-txt-2 truncate">${escape(client(c.clientId).nom)}</span>
+      <span class="flex items-center gap-1.5 ml-auto">${c.reseaux.map((r) => reseauGlyphe(r, 13)).join('')}</span>
     </div>
     ${c.taches.length ? `<div class="mb-2.5">
       <p class="mono text-[9.5px] text-txt-3 mb-1">${c.taches.filter((t) => t.etat === 'fait').length}/${c.taches.length} sous-tâches</p>
